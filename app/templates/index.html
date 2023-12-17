@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div><p>{{ dogs|length }} Dogs Available</p></div>
+
+    <div class="container">
+        {% for row_of_dogs in dogs|batch(3, '&nbsp;') %}
+            <div class="row">
+                {% for dog in row_of_dogs %}
+                    {% set img_url = dog.images[0].get("image").get("url") %}
+                    <div class="col-sm">
+                        <p>
+                          <a href="{{ url_for('main.dog', dog_name=dog.name) }}">{{ dog.name }}</a>
+                        </p>
+                        <p><img src="{{ img_url }}" width="100"></p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

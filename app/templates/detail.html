@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% set img_url = dog.images[0].get("image").get("url") %}
+    <p><img src="{{ img_url }}" width="400"></p>
+    {{ dog.name }}
+    <p>sex: {{ dog.sex }}</p>
+    <p>size: {{ dog.size }}</p>
+    <p>weight: {{ dog.weight }}</p>
+    <p>numerical_age: {{ dog.numerical_age }}</p>
+    <p>age: {{ dog.age }}</p>
+    <p>date of birth: {{ dog.date_of_birth }}</p>
+    <p>all breeds: {{ dog.all_breeds | replace(", ,", "") }}</p>
+    <p>description: {{ dog.description|striptags }}</p>
+    <p>date acquired: {{ dog.date_aquired }}</p>
+    <p>shedding: {{ dog.shedding }}</p>
+    <p>temperament: {{ dog.temperament }}</p>
+
+    <p>shots up to date: {{ dog.shots_up_to_date }}</p>
+    <p>is spayed: {{ dog.is_spayed }}</p>
+    <p>is hypoallergenic: {{ dog.is_hypoallergenic }}</p>
+    <p>is housebroken: {{ dog.is_housebroken }}</p>
+    <p>has special need: {{ dog.has_special_need }}</p>
+    <p>is ok with other dogs: {{ dog.is_ok_with_other_dogs }}</p>
+    <p>is ok with other cats: {{ dog.is_ok_with_other_cats }}</p>
+    <p>is ok with other kids: {{ dog.is_ok_with_other_kids }}</p>
+
+    <hr />
+    <a href="{{ url_for('main.index') }}">BACK</a>
+{% endblock %}
