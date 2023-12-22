@@ -32,14 +32,17 @@
             <div class="form-check mb-2">
               {{ form.is_ok_with_other_dogs(class="form-check-input") }}
               {{ form.is_ok_with_other_dogs.label(class="form-check-label") }}
+              <i class="fa-solid fa-dog text-secondary"></i>
             </div>
             <div class="form-check mb-2">
               {{ form.is_ok_with_other_cats(class="form-check-input") }}
               {{ form.is_ok_with_other_cats.label(class="form-check-label") }}
+              <i class="fa-solid fa-cat text-secondary"></i>
             </div>
             <div class="form-check">
               {{ form.is_ok_with_other_kids(class="form-check-input") }}
               {{ form.is_ok_with_other_kids.label(class="form-check-label") }}
+              <i class="fa-solid fa-baby text-secondary"></i>
             </div>
           </fieldset>
           <button type="submit" class="btn btn-primary w-100">Search</button>
