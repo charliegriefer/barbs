@@ -9,7 +9,7 @@ shed_choices = [("", "Any"),
                 ("No shedding", "No Shedding"), ("Sheds a little", "Sheds a Little"), ("Sheds a lot", "Sheds a Lot")]
 
 class SearchForm(FlaskForm):
-    gender = SelectField("Gender", choices=[("", "Any"), ("Male", "Male"), ("Female", "Female")])
+    sex = SelectField("Gender", choices=[("", "Any"), ("Male", "Male"), ("Female", "Female")])
     age = SelectField("Age", choices = age_choices)
     breed = SelectField("Breed", choices=[("", "Any")])
     size = SelectField("Size", choices=size_choices)

@@ -5,12 +5,11 @@
     <div class="row">
       <div class="col-3 border-right">
         <div><p>{{ dogs|length }} Dog{% if dogs|length != 1%}s{% endif %} Available</p></div>
-        <form method="post">
-          {{ form.csrf_token }}
+        <form>
           <fieldset class="border p-2 bg-light">
             <div class="form-group">
-              {{ form.gender.label(class="form-label") }}
-              {{ form.gender(class="form-control") }}
+              {{ form.sex.label(class="form-label") }}
+              {{ form.sex(class="form-control") }}
             </div>
             <div class="form-group">
               {{ form.age.label(class="form-label") }}
