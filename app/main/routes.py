@@ -11,7 +11,6 @@ from app.main import main_blueprint
 @main_blueprint.before_request
 def load_available_dogs():
     if not cache.has("available_dogs"):
-        # print("GETTING DOGS!!!")
         PETSTABLISHED_BASE_URL = current_app.config['PETSTABLISHED_BASE_URL']
         PETSTABLISHED_PUBLIC_KEY = current_app.config['PETSTABLISHED_PUBLIC_KEY']
 
@@ -47,6 +46,16 @@ def index():
         if request.form["breed"] != "":
             available_dogs = [dog for dog in available_dogs
                 if dog["primary_breed"] == request.form["breed"] or dog["secondary_breed"] == request.form["breed"]]
+        if request.form["shedding"] != "":
+            available_dogs = [dog for dog in available_dogs if dog["shedding"] == request.form["shedding"]]
+        if request.form["size"] != "":
+            available_dogs = [dog for dog in available_dogs if dog["size"] == request.form["size"]]
+        if request.form.get("is_ok_with_other_dogs"):
+            available_dogs = [dog for dog in available_dogs if dog["is_ok_with_other_dogs"] == "Yes"]
+        if request.form.get("is_ok_with_other_cats"):
+            available_dogs = [dog for dog in available_dogs if dog["is_ok_with_other_cats"] == "Yes"]
+        if request.form.get("is_ok_with_other_kids"):
+            available_dogs = [dog for dog in available_dogs if dog["is_ok_with_other_kids"] == "Yes"]
 
     return render_template("index.html", title="Home", form=form, dogs=available_dogs)
 
