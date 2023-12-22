@@ -42,6 +42,9 @@ def index():
             if arg in ["is_ok_with_other_dogs", "is_ok_with_other_cats", "is_ok_with_other_kids"]:
                 available_dogs = [dog for dog in available_dogs if dog[arg] == "Yes"]
                 form[arg].process_data(request.args.get(arg))
+            if arg == "breed":
+                available_dogs = [dog for dog in available_dogs if request.args.get(arg) in [dog["primary_breed"], dog["secondary_breed"]]]
+                form["breed"].process_data(request.args.get("breed"))
 
     return render_template("index.html",
                            title="Adopt | Puerto Peñasco | Barb's Dog Rescue",
