@@ -8,3 +8,4 @@ age_choices = [("", "Any"), ("Puppy", "Puppy"), ("Young", "Young"), ("Adult", "A
 class SearchForm(FlaskForm):
     gender = SelectField("Gender", choices=[("", "Any"), ("Male", "Male"), ("Female", "Female")])
     age = SelectField("Age", choices = age_choices)
+    breed = SelectField("Breed", choices=[("", "Any")])
