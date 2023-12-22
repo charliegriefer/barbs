@@ -4,13 +4,14 @@ import requests
 from flask import current_app, render_template, request
 
 from app.extensions import cache
+from app.forms import SearchForm
 from app.main import main_blueprint
 
 
 @main_blueprint.before_request
 def load_available_dogs():
     if not cache.has("available_dogs"):
-        print("GETTING DOGS!!!")
+        # print("GETTING DOGS!!!")
         PETSTABLISHED_BASE_URL = current_app.config['PETSTABLISHED_BASE_URL']
         PETSTABLISHED_PUBLIC_KEY = current_app.config['PETSTABLISHED_PUBLIC_KEY']
 
@@ -24,17 +25,29 @@ def load_available_dogs():
 @main_blueprint.route("/", methods=["GET", "POST"])
 @main_blueprint.route("/index", methods=["GET", "POST"])
 def index():
+    available_dogs = cache.get("available_dogs").get("collection")
     form = SearchForm()
 
-    available_dogs = cache.get("available_dogs").get("collection")
+    # create the list of breeds to populate the dropdown
+    breeds = set()
+    [breeds.add(breed.get("primary_breed")) for breed in available_dogs if breed.get("primary_breed") != ""]
+    [breeds.add(breed.get("secondary_breed")) for breed in available_dogs if breed.get("secondary_breed") != ""]
+
+    form_breeds = list(breeds)
+    form_breeds.sort()
+
+    form.breed.choices = [(breed, breed) for breed in form_breeds]
+    form.breed.choices.insert(0, ("", "Any"))
+
     if request.method == "POST":
-        print("----------------------------------")
-        print(request.form["age"])
-        print("----------------------------------")
         if request.form["gender"] != "":
             available_dogs = [dog for dog in available_dogs if dog["sex"] == request.form["gender"]]
         if request.form["age"] != "":
             available_dogs = [dog for dog in available_dogs if dog["age"] == request.form["age"]]
+        if request.form["breed"] != "":
+            available_dogs = [dog for dog in available_dogs
+                if dog["primary_breed"] == request.form["breed"] or dog["secondary_breed"] == request.form["breed"]]
+
     return render_template("index.html", title="Home", form=form, dogs=available_dogs)
 
 
