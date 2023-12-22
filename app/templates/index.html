@@ -3,6 +3,7 @@
 {% block content %}
   <div><p>{{ dogs|length }} Dogs Available</p></div>
 
+<<<<<<< HEAD
   <div>
     FILTERING
     <form method="post">
@@ -35,6 +36,21 @@
               &nbsp;
             {% endif %}
           </div>
+=======
+    <div class="container">
+        {% for row_of_dogs in dogs|batch(3, '&nbsp;') %}
+            <div class="row">
+                {% for dog in row_of_dogs %}
+                    {% set img_url = dog.images[0].get("image").get("url") %}
+                    <div class="col-sm">
+                        <p>
+                          <a href="{{ url_for('main.dog_detail', dog_id=dog.id) }}">{{ dog.name }}</a>
+                        </p>
+                        <p><img src="{{ img_url }}" width="100"></p>
+                    </div>
+                {% endfor %}
+            </div>
+>>>>>>> 706bbff73125c01e05d4564197df93aed968c077
         {% endfor %}
       </div>
     {% endfor %}

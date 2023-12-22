@@ -7,7 +7,10 @@ from app.extensions import cache
 from app.forms import SearchForm
 from app.main import main_blueprint
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 706bbff73125c01e05d4564197df93aed968c077
 @main_blueprint.before_request
 def load_available_dogs():
     if not cache.has("available_dogs"):
@@ -22,31 +25,19 @@ def load_available_dogs():
         available_dogs = r.json()
         cache.set("available_dogs", available_dogs, timeout=3600)
 
-@main_blueprint.route("/", methods=["GET", "POST"])
-@main_blueprint.route("/index", methods=["GET", "POST"])
+@main_blueprint.route("/")
+@main_blueprint.route("/index")
 def index():
-    form = SearchForm()
-
-    available_dogs = cache.get("available_dogs").get("collection")
-    if request.method == "POST":
-        print("----------------------------------")
-        print(request.form["age"])
-        print("----------------------------------")
-        if request.form["gender"] != "":
-            available_dogs = [dog for dog in available_dogs if dog["sex"] == request.form["gender"]]
-        if request.form["age"] != "":
-            available_dogs = [dog for dog in available_dogs if dog["age"] == request.form["age"]]
-    return render_template("index.html", title="Home", form=form, dogs=available_dogs)
+    available_dogs = cache.get("available_dogs")
+    return render_template("index.html", title="Home", dogs=available_dogs.get("collection"))
 
 
-@main_blueprint.route("/dog/<string:dog_name>")
-def dog(dog_name: str):
-    PETSTABLISHED_BASE_URL = current_app.config['PETSTABLISHED_BASE_URL']
-    PETSTABLISHED_PUBLIC_KEY = current_app.config['PETSTABLISHED_PUBLIC_KEY']
+@main_blueprint.route("/detail/<int:dog_id>")
+def dog_detail(dog_id: int):
+    available_dogs = cache.get("available_dogs")
 
-    dog_url = f"{PETSTABLISHED_BASE_URL}?public_key={PETSTABLISHED_PUBLIC_KEY}&search[name]={dog_name}"
+    dog = next((item for item in available_dogs.get("collection") if item["id"] == dog_id), None)
+    if not dog:
+        return render_template("404.html")
 
-    r = requests.get(dog_url)
-    dog = r.json()
-    # TODO: handle no dog returned
-    return render_template("detail.html", dog=dog.get("collection")[0])
+    return render_template("detail.html", dog=dog)
