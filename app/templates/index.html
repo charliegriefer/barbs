@@ -3,7 +3,10 @@
 {% block content %}
   <div><p>{{ dogs|length }} Dogs Available</p></div>
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
   <div>
     FILTERING
     <form method="post">
@@ -36,6 +39,7 @@
               &nbsp;
             {% endif %}
           </div>
+<<<<<<< Updated upstream
 =======
     <div class="container">
         {% for row_of_dogs in dogs|batch(3, '&nbsp;') %}
@@ -51,6 +55,8 @@
                 {% endfor %}
             </div>
 >>>>>>> 706bbff73125c01e05d4564197df93aed968c077
+=======
+>>>>>>> Stashed changes
         {% endfor %}
       </div>
     {% endfor %}

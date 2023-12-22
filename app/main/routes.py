@@ -4,13 +4,9 @@ import requests
 from flask import current_app, render_template, request
 
 from app.extensions import cache
-from app.forms import SearchForm
 from app.main import main_blueprint
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 706bbff73125c01e05d4564197df93aed968c077
 @main_blueprint.before_request
 def load_available_dogs():
     if not cache.has("available_dogs"):
@@ -25,11 +21,21 @@ def load_available_dogs():
         available_dogs = r.json()
         cache.set("available_dogs", available_dogs, timeout=3600)
 
-@main_blueprint.route("/")
-@main_blueprint.route("/index")
+@main_blueprint.route("/", methods=["GET", "POST"])
+@main_blueprint.route("/index", methods=["GET", "POST"])
 def index():
-    available_dogs = cache.get("available_dogs")
-    return render_template("index.html", title="Home", dogs=available_dogs.get("collection"))
+    form = SearchForm()
+
+    available_dogs = cache.get("available_dogs").get("collection")
+    if request.method == "POST":
+        print("----------------------------------")
+        print(request.form["age"])
+        print("----------------------------------")
+        if request.form["gender"] != "":
+            available_dogs = [dog for dog in available_dogs if dog["sex"] == request.form["gender"]]
+        if request.form["age"] != "":
+            available_dogs = [dog for dog in available_dogs if dog["age"] == request.form["age"]]
+    return render_template("index.html", title="Home", form=form, dogs=available_dogs)
 
 
 @main_blueprint.route("/detail/<int:dog_id>")
