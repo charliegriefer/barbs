@@ -2,7 +2,7 @@ import json
 from typing import Dict, List
 
 import requests
-from flask import current_app, render_template, request
+from flask import current_app, flash, render_template, request
 
 from app.extensions import cache
 from app.forms import PaginationForm, SearchForm
@@ -12,6 +12,7 @@ from app.main import main_blueprint
 @main_blueprint.before_request
 def load_available_dogs():
     if not cache.has("available_dogs"):
+        flash("DEBUGGING: No cache. Hitting API.")
         PETSTABLISHED_BASE_URL = current_app.config['PETSTABLISHED_BASE_URL']
         PETSTABLISHED_PUBLIC_KEY = current_app.config['PETSTABLISHED_PUBLIC_KEY']
 
@@ -21,10 +22,12 @@ def load_available_dogs():
         r = requests.get(available_dogs)
         available_dogs = r.json()
         cache.set("available_dogs", available_dogs, timeout=3600)
+    else:
+        flash("DEBUGGING: Cached data. No API call needed.")
 
-
-@main_blueprint.route("/", methods=["GET", "POST"])
-@main_blueprint.route("/index", methods=["GET", "POST"])
+@main_blueprint.route("/")
+@main_blueprint.route("/index")
+@main_blueprint.route("/index_embedded")
 def index():
     available_dogs = cache.get("available_dogs").get("collection")
     search_form = SearchForm()
@@ -51,11 +54,16 @@ def index():
                 available_dogs = [dog for dog in available_dogs if request.args.get(arg) in [dog["primary_breed"], dog["secondary_breed"]]]
                 form["breed"].process_data(request.args.get("breed"))
 
+    is_embedded = False
+    if request.path == "/index_embedded":
+        is_embedded = True
+
     return render_template("index.html",
                            title="Adopt | Puerto Peñasco | Barb's Dog Rescue",
                            pagination_form=pagination_form,
                            search_form=search_form,
-                           dogs=available_dogs)
+                           dogs=available_dogs,
+                           is_embedded=is_embedded)
 
 
 @main_blueprint.route("/detail/<int:dog_id>")
