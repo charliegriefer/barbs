@@ -5,7 +5,7 @@ import requests
 from flask import current_app, render_template, request
 
 from app.extensions import cache
-from app.forms import SearchForm
+from app.forms import PaginationForm, SearchForm
 from app.main import main_blueprint
 
 
@@ -27,11 +27,16 @@ def load_available_dogs():
 @main_blueprint.route("/index", methods=["GET", "POST"])
 def index():
     available_dogs = cache.get("available_dogs").get("collection")
-    form = SearchForm()
+    search_form = SearchForm()
+    pagination_form = PaginationForm()
 
     # create the list of breeds to populate the dropdown
-    form.breed.choices = [(breed, breed) for breed in get_dog_breeds(available_dogs)]
-    form.breed.choices.insert(0, ("", "Any"))
+    search_form.breed.choices = [(breed, breed) for breed in get_dog_breeds(available_dogs)]
+    search_form.breed.choices.insert(0, ("", "Any"))
+
+    # pagination
+    per_page = request.args.get("per_page", 25)
+    current_page = request.args.get("current_page", 1)
 
     # do filtering
     for arg in request.args:
@@ -48,7 +53,8 @@ def index():
 
     return render_template("index.html",
                            title="Adopt | Puerto Peñasco | Barb's Dog Rescue",
-                           form=form,
+                           pagination_form=pagination_form,
+                           search_form=search_form,
                            dogs=available_dogs)
 
 
