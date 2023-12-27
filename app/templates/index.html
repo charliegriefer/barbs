@@ -4,84 +4,103 @@
   <div class="container" style="margin-top:22px;">
     <div class="row">
       <div class="col-3 border-right">
-        <div><p>{{ dogs|length }} Dog{% if dogs|length != 1%}s{% endif %} Available</p></div>
+        <div>
+          <p>{{ dogs|length }} Dog{% if dogs|length != 1%}s{% endif %} Available</p>
+        </div>
+        <div>
+          <form>
+            {{ pagination_form.per_page.label(class="form-label") }}
+            {{ pagination_form.per_page(class="form-control") }}
+          </form>
+        </div>
         <form>
           <fieldset class="border p-2 bg-light">
             <div class="form-group">
-              {{ form.sex.label(class="form-label") }}
-              {{ form.sex(class="form-control") }}
+              {{ search_form.sex.label(class="form-label") }}
+              {{ search_form.sex(class="form-control") }}
             </div>
             <div class="form-group">
-              {{ form.age.label(class="form-label") }}
-              {{ form.age(class="form-control") }}
+              {{ search_form.age.label(class="form-label") }}
+              {{ search_form.age(class="form-control") }}
             </div>
             <div class="form-group">
-              {{ form.breed.label(class="form-label") }}
-              {{ form.breed(class="form-control") }}
+              {{ search_form.breed.label(class="form-label") }}
+              {{ search_form.breed(class="form-control") }}
             </div>
             <div class="form-group">
-              {{ form.size.label(class="form-label") }}
-              {{ form.size(class="form-control") }}
+              {{ search_form.size.label(class="form-label") }}
+              {{ search_form.size(class="form-control") }}
             </div>
             <div class="form-group">
-              {{ form.shedding.label(class="form-label") }}
-              {{ form.shedding(class="form-control") }}
+              {{ search_form.shedding.label(class="form-label") }}
+              {{ search_form.shedding(class="form-control") }}
             </div>
           </fieldset>
           <fieldset class="border p-2 mt-4 mb-4 bg-light">
             <div class="form-check mb-2">
-              {{ form.is_ok_with_other_dogs(class="form-check-input") }}
-              {{ form.is_ok_with_other_dogs.label(class="form-check-label") }}
+              {{ search_form.is_ok_with_other_dogs(class="form-check-input") }}
+              {{ search_form.is_ok_with_other_dogs.label(class="form-check-label") }}
               <i class="fa-solid fa-dog text-secondary"></i>
             </div>
             <div class="form-check mb-2">
-              {{ form.is_ok_with_other_cats(class="form-check-input") }}
-              {{ form.is_ok_with_other_cats.label(class="form-check-label") }}
+              {{ search_form.is_ok_with_other_cats(class="form-check-input") }}
+              {{ search_form.is_ok_with_other_cats.label(class="form-check-label") }}
               <i class="fa-solid fa-cat text-secondary"></i>
             </div>
             <div class="form-check">
-              {{ form.is_ok_with_other_kids(class="form-check-input") }}
-              {{ form.is_ok_with_other_kids.label(class="form-check-label") }}
+              {{ search_form.is_ok_with_other_kids(class="form-check-input") }}
+              {{ search_form.is_ok_with_other_kids.label(class="form-check-label") }}
               <i class="fa-solid fa-baby text-secondary"></i>
             </div>
           </fieldset>
           <button type="submit" class="btn btn-primary w-100">Search</button>
         </form>
       </div>
+
       <div class="col-9">
-        {% for row_of_dogs in dogs|batch(4, '&nbsp;') %}
-          <div class="row">
+        {% for row_of_dogs in dogs|batch(4, "&nbsp;") %}
+          <div class="row mb-2">
             {% for dog in row_of_dogs %}
-              <div class="col-sm">
-                {% if dog != "&nbsp;" %}
-                  <a href="{{ url_for('main.dog_detail', dog_id=dog.id) }}">
+              {% if dog != "&nbsp;" %}
+              <a href="{{ url_for('main.dog_detail', dog_id=dog.id) }}">
+                <div class="col-sm m-2 pt-2 pb-2 dog_search_result" style="cursor:pointer;" id="{{ dog.id }}">
                     <div style="width:100%; text-align:center;">
-                      <img src="{{ dog.images[0].get('image').get('url') }}" style="width:100%;">
-                      <p>
-                        {{ dog.name }} ({{ dog.sex }})
-                        <br />
-                        {{ dog.age }}
-                        <br />
-                        {{ dog.primary_breed }}
-                        {% if dog.secondary_breed %}
-                          &amp; {{ dog.secondary_breed }}
-                        {% endif %}
-                      </p>
+                      <img src="{{ dog.images[0].get('image').get('url') }}" />
+                      <div class="container">
+                        <div class="row">
+                          <div class="col pt-2">
+                            <span class="font-weight-bold" style="color:#9a0e24;">{{ dog.name }}</span>
+                            {% if dog.sex == "Male" %}
+                              <i class="fa-solid fa-mars" style="color:#01a6ea;" title="Male"></i>
+                            {% elif dog.sex == "Female" %}
+                              <i class="fa-solid fa-venus" style="color:#ffb1cb;" title="Female"></i>
+                            {% endif %}
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col font-weight-bold text-dark" style="font-size:smaller;">{{ dog.age }}</div>
+                        </div>
+                        <div class="row">
+                          <div class="col text-dark" style="font-size:smaller;">
+                            {{ dog.primary_breed }}
+                            {% if dog.secondary_breed %}
+                              &amp; {{ dog.secondary_breed }}
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </a>
-                {% else %}
+                </div>
+              {% else %}
+                <div class="col-sm m-2 pt-2 pb-2">
                   &nbsp;
-                {% endif %}
-              </div>
+                </div>
+              {% endif %}
             {% endfor %}
           </div>
         {% endfor %}
       </div>
-
-
-
-
-
+    </div>
   </div>
-
 {% endblock %}
