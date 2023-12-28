@@ -40,7 +40,7 @@ def index():
     # pagination
     per_page = int(request.args.get("per_page", 25))
     current_page = request.args.get("current_page", 1)
-    pagination_form["per_page"].process_data(request.args.get("per_page"))
+    pagination_form["per_page"].process_data(per_page)
 
     # do filtering
     for key, value in request.args.items():
@@ -60,10 +60,9 @@ def index():
         is_embedded = True
 
     # pagination
-    if per_page:
-        view_start = (int(current_page) - 1) * per_page
-        available_dogs = available_dogs[view_start:view_start + per_page]
-        number_of_pages = math.ceil(available_dogs_total/per_page)
+    view_start = (int(current_page) - 1) * per_page
+    available_dogs = available_dogs[view_start:view_start + per_page]
+    number_of_pages = math.ceil(available_dogs_total/per_page)
 
     print("per_page: ", per_page)
     print("view_start: ", view_start)
@@ -83,6 +82,7 @@ def index():
                            available_dogs_total=available_dogs_total,
                            is_embedded=is_embedded,
                            current_page=int(current_page),
+                           per_page=int(per_page),
                            number_of_pages=int(number_of_pages),
                            qs="&".join(qs))
 

@@ -30,30 +30,5 @@
     {% endif %}
   {% endwith %}
     {% block content %}{% endblock %}
-
-    {% block scripts %}
-      <script type="text/javascript">
-        const per_page = document.getElementById("per_page_select");
-        const hidden_input = document.getElementById("per_page");
-        const search_form = document.getElementById("search_form")
-
-        per_page.addEventListener("change", (event) => {
-          hidden_input.value = per_page.value;
-          search_form.submit()
-        });
-
-        var elements = document.getElementsByClassName("dog_search_result");
-        for (var i = 0; i < elements.length; i++) {
-          elements[i].addEventListener("mouseenter", function (event) {
-            event.target.style.borderColor = "#c0c0c0";
-            event.target.style.boxShadow = "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)";
-          })
-          elements[i].addEventListener("mouseleave", function(event) {
-            event.target.style.borderColor = "#d3dede";
-            event.target.style.boxShadow = "none";
-          })
-        }
-      </script>
-    {% endblock %}
   </body>
 </html>
