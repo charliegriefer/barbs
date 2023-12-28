@@ -1,4 +1,5 @@
 import json
+import math
 from typing import Dict, List
 
 import requests
@@ -27,7 +28,6 @@ def load_available_dogs():
 
 @main_blueprint.route("/")
 @main_blueprint.route("/index")
-@main_blueprint.route("/index_embedded")
 def index():
     available_dogs = cache.get("available_dogs").get("collection")
     search_form = SearchForm()
@@ -38,32 +38,53 @@ def index():
     search_form.breed.choices.insert(0, ("", "Any"))
 
     # pagination
-    per_page = request.args.get("per_page", 25)
+    per_page = int(request.args.get("per_page", 25))
     current_page = request.args.get("current_page", 1)
+    pagination_form["per_page"].process_data(request.args.get("per_page"))
 
     # do filtering
-    for arg in request.args:
-        if request.args.get(arg):
-            if arg in ["sex", "age", "size", "shedding"]:
-                available_dogs = [dog for dog in available_dogs if dog[arg] == request.args.get(arg)]
-                form[arg].process_data(request.args.get(arg))
-            if arg in ["is_ok_with_other_dogs", "is_ok_with_other_cats", "is_ok_with_other_kids"]:
-                available_dogs = [dog for dog in available_dogs if dog[arg] == "Yes"]
-                form[arg].process_data(request.args.get(arg))
-            if arg == "breed":
-                available_dogs = [dog for dog in available_dogs if request.args.get(arg) in [dog["primary_breed"], dog["secondary_breed"]]]
-                form["breed"].process_data(request.args.get("breed"))
+    for key, value in request.args.items():
+        if key in ["sex", "age", "size", "shedding", "breed"] and value:
+            if key in ["sex", "age", "size", "shedding"]:
+                available_dogs = [dog for dog in available_dogs if dog[key] == value]
+            if key == "breed":
+                breeds = [dog["primary_breed"], dog["secondary_breed"]]
+                available_dogs = [dog for dog in available_dogs if value in breeds]
+            search_form[key].process_data(value)
 
+    available_dogs_total = len(available_dogs)
+
+    # TODO: make "is_embedded" a url param. will have to change line 48 above to skip it.
     is_embedded = False
     if request.path == "/index_embedded":
         is_embedded = True
+
+    # pagination
+    if per_page:
+        view_start = (int(current_page) - 1) * per_page
+        available_dogs = available_dogs[view_start:view_start + per_page]
+        number_of_pages = math.ceil(available_dogs_total/per_page)
+
+    print("per_page: ", per_page)
+    print("view_start: ", view_start)
+    print("number_of_pages: ", number_of_pages)
+    print("current_page: ", current_page)
+
+    # for pagination links
+    qs = []
+    for key, value in request.args.items():
+        qs.append(f"{key}={value}")
 
     return render_template("index.html",
                            title="Adopt | Puerto Peñasco | Barb's Dog Rescue",
                            pagination_form=pagination_form,
                            search_form=search_form,
                            dogs=available_dogs,
-                           is_embedded=is_embedded)
+                           available_dogs_total=available_dogs_total,
+                           is_embedded=is_embedded,
+                           current_page=int(current_page),
+                           number_of_pages=int(number_of_pages),
+                           qs="&".join(qs))
 
 
 @main_blueprint.route("/detail/<int:dog_id>")
