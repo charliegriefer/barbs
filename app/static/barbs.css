@@ -6,6 +6,8 @@ body {
   font-family: raleway, sans-serif !important;
 }
 
+fieldset { border-radius: 10px; }
+
 .dog_search_result {
   border: 1px solid #d3d3d3;
   border-radius: 10px;
