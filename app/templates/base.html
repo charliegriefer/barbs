@@ -33,6 +33,15 @@
 
     {% block scripts %}
       <script type="text/javascript">
+        const per_page = document.getElementById("per_page_select");
+        const hidden_input = document.getElementById("per_page");
+        const search_form = document.getElementById("search_form")
+
+        per_page.addEventListener("change", (event) => {
+          hidden_input.value = per_page.value;
+          search_form.submit()
+        });
+
         var elements = document.getElementsByClassName("dog_search_result");
         for (var i = 0; i < elements.length; i++) {
           elements[i].addEventListener("mouseenter", function (event) {
