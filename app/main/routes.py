@@ -3,17 +3,23 @@ import math
 from typing import Dict, List
 
 import requests
-from flask import current_app, flash, render_template, request
+from flask import current_app, flash, render_template, request, url_for
 
 from app.extensions import cache
 from app.forms import PaginationForm, SearchForm
 from app.main import main_blueprint
 
 
+def calculate_page_link(page: int, qs: str) -> str:
+    href = f"{url_for('main.index')}?current_page={page}"
+    if len(qs):
+        href += f"&{qs}"
+    return href
+
+
 @main_blueprint.before_request
 def load_available_dogs():
     if not cache.has("available_dogs"):
-        flash("DEBUGGING: No cache. Hitting API.")
         PETSTABLISHED_BASE_URL = current_app.config['PETSTABLISHED_BASE_URL']
         PETSTABLISHED_PUBLIC_KEY = current_app.config['PETSTABLISHED_PUBLIC_KEY']
 
@@ -23,8 +29,7 @@ def load_available_dogs():
         r = requests.get(available_dogs)
         available_dogs = r.json()
         cache.set("available_dogs", available_dogs, timeout=3600)
-    else:
-        flash("DEBUGGING: Cached data. No API call needed.")
+
 
 @main_blueprint.route("/")
 @main_blueprint.route("/index")
@@ -54,25 +59,21 @@ def index():
 
     available_dogs_total = len(available_dogs)
 
-    # TODO: make "is_embedded" a url param. will have to change line 48 above to skip it.
-    is_embedded = False
-    if request.path == "/index_embedded":
-        is_embedded = True
-
     # pagination
     view_start = (int(current_page) - 1) * per_page
     available_dogs = available_dogs[view_start:view_start + per_page]
     number_of_pages = math.ceil(available_dogs_total/per_page)
 
-    print("per_page: ", per_page)
-    print("view_start: ", view_start)
-    print("number_of_pages: ", number_of_pages)
-    print("current_page: ", current_page)
+    # print("per_page: ", per_page)
+    # print("view_start: ", view_start)
+    # print("number_of_pages: ", number_of_pages)
+    # print("current_page: ", current_page)
 
     # for pagination links
     qs = []
     for key, value in request.args.items():
-        qs.append(f"{key}={value}")
+        if key != "current_page":
+            qs.append(f"{key}={value}")
 
     return render_template("index.html",
                            title="Adopt | Puerto Peñasco | Barb's Dog Rescue",
@@ -80,10 +81,10 @@ def index():
                            search_form=search_form,
                            dogs=available_dogs,
                            available_dogs_total=available_dogs_total,
-                           is_embedded=is_embedded,
                            current_page=int(current_page),
                            per_page=int(per_page),
                            number_of_pages=int(number_of_pages),
+                           calculate_page_link=calculate_page_link,
                            qs="&".join(qs))
 
 
