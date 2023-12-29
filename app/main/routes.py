@@ -32,7 +32,6 @@ def load_available_dogs():
 
 
 @main_blueprint.route("/")
-@main_blueprint.route("/index")
 def index():
     available_dogs = cache.get("available_dogs").get("collection")
     search_form = SearchForm()
@@ -53,21 +52,17 @@ def index():
             if key in ["sex", "age", "size", "shedding"]:
                 available_dogs = [dog for dog in available_dogs if dog[key] == value]
             if key == "breed":
-                breeds = [dog["primary_breed"], dog["secondary_breed"]]
-                available_dogs = [dog for dog in available_dogs if value in breeds]
+                available_dogs = [dog for dog in available_dogs
+                                  if value in [dog["primary_breed"], dog["secondary_breed"]]]
             search_form[key].process_data(value)
 
-    available_dogs_total = len(available_dogs)
+    # carry through the number of total dogs. would get overwritten due to pagination
+    total_dogs = len(available_dogs)
 
     # pagination
     view_start = (int(current_page) - 1) * per_page
     available_dogs = available_dogs[view_start:view_start + per_page]
-    number_of_pages = math.ceil(available_dogs_total/per_page)
-
-    # print("per_page: ", per_page)
-    # print("view_start: ", view_start)
-    # print("number_of_pages: ", number_of_pages)
-    # print("current_page: ", current_page)
+    number_of_pages = math.ceil(total_dogs/per_page)
 
     # for pagination links
     qs = []
@@ -80,7 +75,7 @@ def index():
                            pagination_form=pagination_form,
                            search_form=search_form,
                            dogs=available_dogs,
-                           available_dogs_total=available_dogs_total,
+                           total_dogs=total_dogs,
                            current_page=int(current_page),
                            per_page=int(per_page),
                            number_of_pages=int(number_of_pages),

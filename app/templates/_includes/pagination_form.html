@@ -1,21 +1,29 @@
 <div class="container">
   <div class="row">
-    <div class="col pl-2 pt-2">
-      {% set min = ((current_page - 1) * per_page) + 1 %}
-      {% set max = min + per_page - 1 %}
-      Displaying <span class="barbs_red">{{ min }}</span> - <span class="barbs_red">{% if max > available_dogs_total %}{{ available_dogs_total }}{% else %}{{ max }}{% endif %}</span> of <span class="font-weight-bold barbs_red">{{ available_dogs_total }}</span> Records
-    </div>
-    <div class="col pr-0 pb-2 text-right">
-      <div class="container">
-        <div class="row justify-content-end pt-1">
-          <div class="col text-right align-baseline pt-1">
-            {{ pagination_form.per_page.label(class="form-label") }}
-          </div>
-          <div class="col-2 text-right p-0 align-baseline">
-            {{ pagination_form.per_page(class="form-control", id="per_page_select") }}
+    {% if dogs|length > 0 %}
+      <div class="col pl-2 pt-2">
+        {% set min = ((current_page - 1) * per_page) + 1 %}
+        {% set max = min + per_page - 1 %}
+        Displaying
+        {% if dogs|length != 1 %}
+          <span class="barbs_red">{{ min }}</span> - <span class="barbs_red">{% if max > total_dogs %}{{ total_dogs }}{% else %}{{ max }}{% endif %}</span> of
+        {% endif %}
+        <span class="font-weight-bold barbs_red">{{ total_dogs }}</span> Record{% if total_dogs != 1%}s{% endif %}
+      </div>
+      <div class="col pr-0 pb-2 text-right">
+        <div class="container">
+          <div class="row justify-content-end pt-1">
+            <div class="col text-right align-baseline pt-1">
+              {{ pagination_form.per_page.label(class="form-label") }}
+            </div>
+            <div class="col-2 text-right p-0 align-baseline">
+              {{ pagination_form.per_page(class="form-control", id="per_page_select") }}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    {% else %}
+      &nbsp;
+    {% endif %}
   </div>
 </div>

@@ -14,8 +14,9 @@
         <div class="col-9">
           {% include "_includes/pagination_form.html" %}
           {% include "_includes/available_dogs.html" %}
-
-          {% include "_includes/pagination_nav.html" %}
+          {% if dogs|length > 0 %}
+            {% include "_includes/pagination_nav.html" %}
+          {% endif %}
         </div>
 
       </div>
