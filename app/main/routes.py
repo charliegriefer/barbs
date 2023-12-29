@@ -91,7 +91,9 @@ def dog_detail(dog_id: int):
     if not dog:
         return render_template("404.html")
 
-    return render_template("detail.html", dog=dog)
+    return render_template("detail.html",
+                           title=f"Adopt | Puerto Peñasco | Barb's Dog Rescue | {dog.get('name')}",
+                           dog=dog)
 
 
 def get_dog_breeds(available_dogs: List[Dict[str, str]]) -> List[str]:
