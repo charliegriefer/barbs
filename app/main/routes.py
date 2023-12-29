@@ -52,7 +52,8 @@ def index():
             if key in ["sex", "age", "size", "shedding"]:
                 available_dogs = [dog for dog in available_dogs if dog[key] == value]
             if key == "breed":
-                available_dogs = [dog for dog in available_dogs if value in [dog["primary_breed"], dog["secondary_breed"]]]
+                available_dogs = [dog for dog in available_dogs
+                                  if value in [dog["primary_breed"], dog["secondary_breed"]]]
             search_form[key].process_data(value)
 
     # carry through the number of total dogs. would get overwritten due to pagination
