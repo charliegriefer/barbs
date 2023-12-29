@@ -2,7 +2,7 @@
   <div class="row mb-2">
     {% for dog in row_of_dogs %}
       {% if dog != "&nbsp;" %}
-        <a href="{{ url_for('main.dog_detail', dog_id=4) }}">
+        <a href="{{ url_for('main.dog_detail', dog_id=dog.id) }}">
           <div class="col-sm mx-2 mt-0 mb-2 py-2 dog_search_result bg-light" style="cursor:pointer;" id="{{ dog.id }}">
             <div class="w-100 text-center">
               <img src="{{ dog.images[0].get('image').get('url') }}" />
