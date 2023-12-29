@@ -1,3 +1,35 @@
 html {
-    overflow-y:scroll;
+  overflow-y: scroll;
+}
+
+body {
+  font-family: raleway, sans-serif !important;
+}
+
+fieldset { border-radius: 10px; }
+
+.barbs_red {
+  color: #9a0e24;
+}
+
+.gender_male {
+  color: #01a6ea;
+}
+.gender_female {
+  color: #ffb1cb;
+}
+
+.dog_search_result {
+  border: 1px solid #d3d3d3;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.dog_search_result img {
+  border-radius: 10px;
+  width: 100%;
+}
+
+.dog_search_result a:hover{
+  text-decoration: none;
 }

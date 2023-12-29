@@ -1,0 +1,43 @@
+{% for row_of_dogs in dogs|batch(4, "&nbsp;") %}
+  <div class="row mb-2">
+    {% for dog in row_of_dogs %}
+      {% if dog != "&nbsp;" %}
+        <a href="{{ url_for('main.dog_detail', dog_id=4) }}">
+          <div class="col-sm mx-2 mt-0 mb-2 py-2 dog_search_result bg-light" style="cursor:pointer;" id="{{ dog.id }}">
+            <div class="w-100 text-center">
+              <img src="{{ dog.images[0].get('image').get('url') }}" />
+              <div class="container">
+                <div class="row">
+                  <div class="col pt-2">
+                    <span class="font-weight-bold barbs_red">{{ dog.name }}</span>
+                      {% if dog.sex == "Male" %}
+                        {% set icon = "fa-mars" %}
+                      {% else %}
+                        {% set icon = "fa-venus" %}
+                      {% endif %}
+                      <i class="fa-solid {{ icon }} gender_{{ dog.sex|lower }}" title="{{ dog.sex }}"></i>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col font-weight-bold text-dark" style="font-size:smaller;">{{ dog.age }}</div>
+                </div>
+                <div class="row">
+                  <div class="col text-dark" style="font-size:smaller;">
+                    {{ dog.primary_breed }}
+                    {% if dog.secondary_breed %}
+                      &amp; {{ dog.secondary_breed }}
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      {% else %}
+        <div class="col-sm mx-2 mt-0 mb-2 pt-2 pb-2">
+          &nbsp;
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endfor %}

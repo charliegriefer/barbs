@@ -17,3 +17,6 @@ class SearchForm(FlaskForm):
     is_ok_with_other_dogs = BooleanField("Good with Dogs")
     is_ok_with_other_cats = BooleanField("Good with Cats")
     is_ok_with_other_kids = BooleanField("Good with Kids")
+
+class PaginationForm(FlaskForm):
+    per_page = SelectField("Results per Page:", choices=[(25, 25), (50, 50), (100, 100), ("", "All")])

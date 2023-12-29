@@ -1,87 +1,47 @@
 {% extends "base.html" %}
 
+{% set main_class = "container" %}
+
 {% block content %}
-  <div class="container" style="margin-top:22px;">
-    <div class="row">
-      <div class="col-3 border-right">
-        <div><p>{{ dogs|length }} Dog{% if dogs|length != 1%}s{% endif %} Available</p></div>
-        <form>
-          <fieldset class="border p-2 bg-light">
-            <div class="form-group">
-              {{ form.sex.label(class="form-label") }}
-              {{ form.sex(class="form-control") }}
-            </div>
-            <div class="form-group">
-              {{ form.age.label(class="form-label") }}
-              {{ form.age(class="form-control") }}
-            </div>
-            <div class="form-group">
-              {{ form.breed.label(class="form-label") }}
-              {{ form.breed(class="form-control") }}
-            </div>
-            <div class="form-group">
-              {{ form.size.label(class="form-label") }}
-              {{ form.size(class="form-control") }}
-            </div>
-            <div class="form-group">
-              {{ form.shedding.label(class="form-label") }}
-              {{ form.shedding(class="form-control") }}
-            </div>
-          </fieldset>
-          <fieldset class="border p-2 mt-4 mb-4 bg-light">
-            <div class="form-check mb-2">
-              {{ form.is_ok_with_other_dogs(class="form-check-input") }}
-              {{ form.is_ok_with_other_dogs.label(class="form-check-label") }}
-              <i class="fa-solid fa-dog text-secondary"></i>
-            </div>
-            <div class="form-check mb-2">
-              {{ form.is_ok_with_other_cats(class="form-check-input") }}
-              {{ form.is_ok_with_other_cats.label(class="form-check-label") }}
-              <i class="fa-solid fa-cat text-secondary"></i>
-            </div>
-            <div class="form-check">
-              {{ form.is_ok_with_other_kids(class="form-check-input") }}
-              {{ form.is_ok_with_other_kids.label(class="form-check-label") }}
-              <i class="fa-solid fa-baby text-secondary"></i>
-            </div>
-          </fieldset>
-          <button type="submit" class="btn btn-primary w-100">Search</button>
-        </form>
+  <div class="{{ main_class }} mt-2">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-3 border-right mt-5">
+          {% include "_includes/filter_form.html" %}
+        </div>
+
+        <div class="col-9">
+          {% include "_includes/pagination_form.html" %}
+          {% include "_includes/available_dogs.html" %}
+
+          {% include "_includes/pagination_nav.html" %}
+        </div>
+
       </div>
-      <div class="col-9">
-        {% for row_of_dogs in dogs|batch(4, '&nbsp;') %}
-          <div class="row">
-            {% for dog in row_of_dogs %}
-              <div class="col-sm">
-                {% if dog != "&nbsp;" %}
-                  <a href="{{ url_for('main.dog_detail', dog_id=dog.id) }}">
-                    <div style="width:100%; text-align:center;">
-                      <img src="{{ dog.images[0].get('image').get('url') }}" style="width:100%;">
-                      <p>
-                        {{ dog.name }} ({{ dog.sex }})
-                        <br />
-                        {{ dog.age }}
-                        <br />
-                        {{ dog.primary_breed }}
-                        {% if dog.secondary_breed %}
-                          &amp; {{ dog.secondary_breed }}
-                        {% endif %}
-                      </p>
-                    </div>
-                  </a>
-                {% else %}
-                  &nbsp;
-                {% endif %}
-              </div>
-            {% endfor %}
-          </div>
-        {% endfor %}
-      </div>
-
-
-
-
-
+    </div>
   </div>
 
+  <script type="text/javascript">
+    const per_page = document.getElementById("per_page_select");
+    const hidden_input = document.getElementById("per_page");
+    const search_form = document.getElementById("search_form")
+
+    per_page.addEventListener("change", (event) => {
+      hidden_input.value = per_page.value;
+      search_form.submit()
+    });
+
+    var elements = document.getElementsByClassName("dog_search_result");
+    for (var i = 0; i < elements.length; i++) {
+      elements[i].addEventListener("mouseenter", function (event) {
+        event.target.style.borderColor = "#c0c0c0";
+        event.target.style.boxShadow = "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)";
+      })
+      elements[i].addEventListener("mouseleave", function(event) {
+        event.target.style.borderColor = "#d3dede";
+        event.target.style.boxShadow = "none";
+      })
+    }
+  </script>
 {% endblock %}

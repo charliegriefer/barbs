@@ -1,12 +1,20 @@
 import json
+import math
 from typing import Dict, List
 
 import requests
-from flask import current_app, render_template, request
+from flask import current_app, flash, render_template, request, url_for
 
 from app.extensions import cache
-from app.forms import SearchForm
+from app.forms import PaginationForm, SearchForm
 from app.main import main_blueprint
+
+
+def calculate_page_link(page: int, qs: str) -> str:
+    href = f"{url_for('main.index')}?current_page={page}"
+    if len(qs):
+        href += f"&{qs}"
+    return href
 
 
 @main_blueprint.before_request
@@ -23,33 +31,61 @@ def load_available_dogs():
         cache.set("available_dogs", available_dogs, timeout=3600)
 
 
-@main_blueprint.route("/", methods=["GET", "POST"])
-@main_blueprint.route("/index", methods=["GET", "POST"])
+@main_blueprint.route("/")
+@main_blueprint.route("/index")
 def index():
     available_dogs = cache.get("available_dogs").get("collection")
-    form = SearchForm()
+    search_form = SearchForm()
+    pagination_form = PaginationForm()
 
     # create the list of breeds to populate the dropdown
-    form.breed.choices = [(breed, breed) for breed in get_dog_breeds(available_dogs)]
-    form.breed.choices.insert(0, ("", "Any"))
+    search_form.breed.choices = [(breed, breed) for breed in get_dog_breeds(available_dogs)]
+    search_form.breed.choices.insert(0, ("", "Any"))
+
+    # pagination
+    per_page = int(request.args.get("per_page", 25))
+    current_page = request.args.get("current_page", 1)
+    pagination_form["per_page"].process_data(per_page)
 
     # do filtering
-    for arg in request.args:
-        if request.args.get(arg):
-            if arg in ["sex", "age", "size", "shedding"]:
-                available_dogs = [dog for dog in available_dogs if dog[arg] == request.args.get(arg)]
-                form[arg].process_data(request.args.get(arg))
-            if arg in ["is_ok_with_other_dogs", "is_ok_with_other_cats", "is_ok_with_other_kids"]:
-                available_dogs = [dog for dog in available_dogs if dog[arg] == "Yes"]
-                form[arg].process_data(request.args.get(arg))
-            if arg == "breed":
-                available_dogs = [dog for dog in available_dogs if request.args.get(arg) in [dog["primary_breed"], dog["secondary_breed"]]]
-                form["breed"].process_data(request.args.get("breed"))
+    for key, value in request.args.items():
+        if key in ["sex", "age", "size", "shedding", "breed"] and value:
+            if key in ["sex", "age", "size", "shedding"]:
+                available_dogs = [dog for dog in available_dogs if dog[key] == value]
+            if key == "breed":
+                breeds = [dog["primary_breed"], dog["secondary_breed"]]
+                available_dogs = [dog for dog in available_dogs if value in breeds]
+            search_form[key].process_data(value)
+
+    available_dogs_total = len(available_dogs)
+
+    # pagination
+    view_start = (int(current_page) - 1) * per_page
+    available_dogs = available_dogs[view_start:view_start + per_page]
+    number_of_pages = math.ceil(available_dogs_total/per_page)
+
+    # print("per_page: ", per_page)
+    # print("view_start: ", view_start)
+    # print("number_of_pages: ", number_of_pages)
+    # print("current_page: ", current_page)
+
+    # for pagination links
+    qs = []
+    for key, value in request.args.items():
+        if key != "current_page":
+            qs.append(f"{key}={value}")
 
     return render_template("index.html",
                            title="Adopt | Puerto Peñasco | Barb's Dog Rescue",
-                           form=form,
-                           dogs=available_dogs)
+                           pagination_form=pagination_form,
+                           search_form=search_form,
+                           dogs=available_dogs,
+                           available_dogs_total=available_dogs_total,
+                           current_page=int(current_page),
+                           per_page=int(per_page),
+                           number_of_pages=int(number_of_pages),
+                           calculate_page_link=calculate_page_link,
+                           qs="&".join(qs))
 
 
 @main_blueprint.route("/detail/<int:dog_id>")
