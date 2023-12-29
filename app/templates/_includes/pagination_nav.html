@@ -1,0 +1,23 @@
+<div id="pagination_navigation" class="py-4">
+  <nav>
+    <ul class="pagination justify-content-center">
+      <li class="page-item{% if current_page == 1 %} disabled{% endif %}">
+        <a class="page-link" href="{{ calculate_page_link(current_page - 1, qs) }}" tabindex="-1"><i class="fa-solid fa-angle-left" title="Previous Page"></i></a>
+      </li>
+      {% for page in range(1, number_of_pages + 1) %}
+        {% if current_page == page %}
+          <li class="page-item active">
+            <span class="page-link">
+              {{ page }} <span class="sr-only">(current)</span>
+            </span>
+          </li>
+        {% else %}
+          <li class="page-item"><a class="page-link" href="{{ calculate_page_link(page, qs) }}">{{ page }}</a></li>
+        {% endif %}
+      {% endfor %}
+      <li class="page-item{% if current_page == number_of_pages %} disabled{% endif %}">
+        <a class="page-link" href="{{ calculate_page_link(current_page + 1, qs) }}"><i class="fa-solid fa-angle-right" title="Next Page"></i></a>
+      </li>
+    </ul>
+  </nav>
+</div>
