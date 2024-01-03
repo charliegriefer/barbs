@@ -17,6 +17,10 @@
           </h1>
         </div>
 
+        <div class="mb-3">
+          <a href="mailto:barbsdogrescue@gmail.com?subject=Inquiry about {{ dog.name }}">Inquire about {{ dog.name }}</a>
+        </div>
+
         <div class="container py-2 pl-4 ml-0 border border-dark rounded">
           <div class="row">
             <div class="col-4 pl-1 font-weight-bold">Sex:</div>
@@ -101,6 +105,9 @@
         </div>
 
         <div class="row">&nbsp;</div>
+        <div>
+          <a href="mailto:barbsdogrescue@gmail.com?subject=Inquiry about {{ dog.name }}">Inquire about {{ dog.name }}</a>
+        </div>
 
         <div class="container ml-0">
           <div class="row align-text-bottom">
@@ -120,7 +127,11 @@
 
   <script>
     function goBack() {
-      window.history.back();
+      if (document.referer) {
+        window.history.back();
+      } else {
+        location.href = "https://search.barbsdogrescue.org";
+      }
     }
-    </script>
+  </script>
 {% endblock %}
