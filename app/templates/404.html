@@ -1,8 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <p>OH NO.</p>
-  <br />
-  <br />
-  <a href="{{ url_for('main.index') }}">Home</a>
+  <div class="w-100 text-center">
+    <div class="mt-4">
+      <h3>You Look Lost!</h3>
+    </div>
+    <div>
+      We couldn't find the page you were looking for.
+    </div>
+    <div>
+      <a href="{{ url_for('main.index') }}">Back to the Search Page</a>
+    </div>
+    <img src="{{ url_for('static', filename='img/lost_pup.png') }}" class="mw-50 mt-3" alt="Sad Pup" />
+  </div>
 {% endblock %}

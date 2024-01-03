@@ -1,30 +1,137 @@
 {% extends "base.html" %}
 
+{% set main_class = "container" %}
+
 {% block content %}
-    {% set img_url = dog.images[0].get("image").get("url") %}
-    <p><img src="{{ img_url }}" width="400"></p>
-    {{ dog.name }}
-    <p>sex: {{ dog.sex }}</p>
-    <p>size: {{ dog.size }}</p>
-    <p>weight: {{ dog.weight }}</p>
-    <p>numerical_age: {{ dog.numerical_age }}</p>
-    <p>age: {{ dog.age }}</p>
-    <p>date of birth: {{ dog.date_of_birth }}</p>
-    <p>all breeds: {{ dog.all_breeds | replace(", ,", "") }}</p>
-    <p>description: {{ dog.description|striptags }}</p>
-    <p>date acquired: {{ dog.date_aquired }}</p>
-    <p>shedding: {{ dog.shedding }}</p>
-    <p>temperament: {{ dog.temperament }}</p>
+  <div class="{{ main_class }} mt-2">
+    <div class="row">
+      <div class="col-6">
+        {% set img_url = dog.images[0].get("image").get("url") %}
+        <img src="{{ img_url }}" class="w-100" alt="{{ dog.name }}" title="{{ dog.name }}" />
+      </div>
+      <div class="col-6 pl-0">
 
-    <p>shots up to date: {{ dog.shots_up_to_date }}</p>
-    <p>is spayed: {{ dog.is_spayed }}</p>
-    <p>is hypoallergenic: {{ dog.is_hypoallergenic }}</p>
-    <p>is housebroken: {{ dog.is_housebroken }}</p>
-    <p>has special need: {{ dog.has_special_need }}</p>
-    <p>is ok with other dogs: {{ dog.is_ok_with_other_dogs }}</p>
-    <p>is ok with other cats: {{ dog.is_ok_with_other_cats }}</p>
-    <p>is ok with other kids: {{ dog.is_ok_with_other_kids }}</p>
+        <div class="row pl-3">
+          <h1>
+            <span class="font-weight-bold barbs_red">{{ dog.name }}</span>
+          </h1>
+        </div>
 
-    <hr />
-    <a href="{{ url_for('main.index') }}">BACK</a>
+        <div class="mb-3">
+          <a href="mailto:barbsdogrescue@gmail.com?subject=Inquiry about {{ dog.name }}">Inquire about {{ dog.name }}</a>
+        </div>
+
+        <div class="container py-2 pl-4 ml-0 border border-dark rounded">
+          <div class="row">
+            <div class="col-4 pl-1 font-weight-bold">Sex:</div>
+            <div class="col ml-0 pl-0">{{ dog.sex }}</div>
+          </div>
+          <div class="row">
+            <div class="col-4 pl-1 font-weight-bold">Size:</div>
+            <div class="col ml-0 pl-0">{{ dog.size }}</div>
+          </div>
+          <div class="row">
+            <div class="col-4 pl-1 font-weight-bold">Weight:</div>
+            <div class="col ml-0 pl-0">{{ dog.weight }} lbs</div>
+          </div>
+        </div>
+
+        <div class="row">&nbsp;</div>
+
+        <div class="container py-2 pl-4 ml-0 border border-dark rounded">
+          <div class="row">
+            <div class="col-4 pl-1 font-weight-bold">Age:</div>
+            <div class="col ml-0 pl-0">{{ dog.age }} ({{ dog.numerical_age }})</div>
+          </div>
+          <div class="row">
+            <div class="col-4 pl-1 font-weight-bold">Date of Birth:</div>
+            <div class="col ml-0 pl-0">{{ dog.date_of_birth }}</div>
+          </div>
+          <div class="row">
+            <div class="col-4 pl-1 font-weight-bold">Date Acquired:</div>
+            <div class="col ml-0 pl-0">{{ dog.date_aquired }}</div>
+          </div>
+        </div>
+
+        <div class="row">&nbsp;</div>
+
+        <div class="container py-2 pl-4 ml-0 border border-dark rounded">
+          <div class="row">
+            <div class="col-4 pl-1 font-weight-bold">Breed(s):</div>
+            <div class="col ml-0 pl-0">{{ dog.all_breeds | replace(", ,", "") }}</div>
+          </div>
+          <div class="row">
+            <div class="col-4 pl-1 font-weight-bold">Shedding:</div>
+            <div class="col ml-0 pl-0">{{ dog.shedding }}</div>
+          </div>
+        </div>
+
+        <div class="row">&nbsp;</div>
+
+        <div class="container py-2 pl-4 ml-0 border border-dark rounded">
+          <div class="row">
+            <div class="col-4 pl-1 font-weight-bold">Shots Up to Date:</div>
+            <div class="col ml-0 pl-0">{{ dog.shots_up_to_date }}</div>
+          </div>
+          <div class="row">
+            <div class="col-4 pl-1 font-weight-bold">Is Spayed/Neutered:</div>
+            <div class="col ml-0 pl-0">{{ dog.is_spayed }}</div>
+          </div>
+          <div class="row">
+            <div class="col-4 pl-1 font-weight-bold">Is Hypoallergenic:</div>
+            <div class="col ml-0 pl-0">{{ dog.is_hypoallergenic }}</div>
+          </div>
+          <div class="row">
+            <div class="col-4 pl-1 font-weight-bold">Is Housebroken:</div>
+            <div class="col ml-0 pl-0">{{ dog.is_housebroken }}</div>
+          </div>
+          <div class="row">
+            <div class="col-4 pl-1 font-weight-bold">Has Special Needs:</div>
+            <div class="col ml-0 pl-0">{{ dog.has_special_need }}</div>
+          </div>
+        </div>
+
+        <div class="row">&nbsp;</div>
+
+        <div class="container py-2 pl-4 ml-0 border border-dark rounded">
+          <div class="row">
+            <div class="col-4 pl-1 font-weight-bold">Temperament:</div>
+            <div class="col ml-0 pl-0">{{ dog.temperament }}</div>
+          </div>
+          <div class="row">
+            <div class="col-4 pl-1 font-weight-bold">Description:</div>
+            <div class="col ml-0 pl-0">{{ dog.description|striptags }}</div>
+          </div>
+        </div>
+
+        <div class="row">&nbsp;</div>
+        <div>
+          <a href="mailto:barbsdogrescue@gmail.com?subject=Inquiry about {{ dog.name }}">Inquire about {{ dog.name }}</a>
+        </div>
+
+        <div class="container ml-0">
+          <div class="row align-text-bottom">
+            <div class="col mt-4 pl-1">
+              <button class="btn btn-primary" onclick="goBack()">
+                <i class="fa-solid fa-backward pr-2"></i>
+                Back to Search
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    function goBack() {
+      if (document.referer) {
+        window.history.back();
+      } else {
+        location.href = "https://search.barbsdogrescue.org";
+      }
+    }
+  </script>
 {% endblock %}
