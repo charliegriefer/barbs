@@ -6,6 +6,28 @@ body {
   font-family: raleway, sans-serif !important;
 }
 
+a { text-decoration: none !important; }
+a.cglink {
+    color:#1391c4 !important;
+    -o-transition:.5s;
+    -ms-transition:.5s;
+    -moz-transition:.5s;
+    -webkit-transition:.5s;
+    /* ...and now for the proper property */
+    transition:.5s;
+  }
+a.cglink:hover { color:#9a0e24 !important; }
+
+.footer {
+  font-weight:bold;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #ac162c;
+  color: #ffffff;
+  text-align: center;
+}
+
 fieldset { border-radius: 10px; }
 
 .barbs_red {
@@ -32,4 +54,42 @@ fieldset { border-radius: 10px; }
 
 .dog_search_result a:hover{
   text-decoration: none;
+}
+
+i.bi { -webkit-text-stroke: 1px; }
+
+.blogo {
+    max-width: 115px;
+}
+
+.navbar * {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+a.nav-link { color: black; }
+
+.nav-item, .dropdown-menu, .dropdown-item {
+  background:#dedede;
+  padding:5px;
+
+  transition:all 1s ease;
+  -webkit-transition-delay:all 1s ease;
+  -moz-transition-delay:all 1s ease;
+  -ms-transition-delay:all 1s ease;
+  -o-transition-delay:all 1s ease;
+  transition-delay:all 1s ease;
+}
+
+.nav-item:hover {
+  background: #000;
+}
+.nav-item:hover .nav-link {
+  color: white;
+}
+
+ul.dropdown-menu li:hover * {
+    background: #000;
+}
+a.dropdown-item:hover {
+    color: white;
 }
