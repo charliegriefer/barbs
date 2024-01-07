@@ -1,36 +1,36 @@
 {% if dogs|length > 0 %}
-  <div class="container text-center mt-0 pt-0">
+
     <div class="row">
       {% for dog in dogs %}
 
-        <div class="col-4 col-md-2 py-2 mx-2 mb-4 dog_search_result bg-light" style="cursor:pointer;" id="{{ dog.id }}">
+        <div class="col-6 col-md-4 col-lg-2 py-2 mx-2 mb-4 dog_search_result bg-light text-center" style="cursor:pointer;" id="{{ dog.id }}">
           <a href="{{ url_for('main.dog_detail', dog_id=dog.id) }}">
-            <img src="{{ dog.images[0].get('image').get('url') }}" />
-            <div class="container">
-              <div class="row">
-                <div class="col pt-2">
-                  <span class="fw-bold barbs_red">{{ dog.name }}</span>
-                  <i class="bi bi-gender-{{ dog.sex|lower }} gender_{{ dog.sex|lower }} fw-bold" title="{{ dog.sex }}"></i>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col fw-bold text-dark" style="font-size:smaller;">{{ dog.age }}</div>
-              </div>
-              <div class="row">
-                <div class="col text-dark" style="font-size:smaller;">
-                  {{ dog.primary_breed }}
-                  {% if dog.secondary_breed %}
-                    &amp; {{ dog.secondary_breed }}
-                  {% endif %}
-                </div>
+            <img src="{{ dog.images[0].get('image').get('url') }}" class="img-fluid" />
+
+            <div class="row">
+              <div class="col pt-2">
+                <span class="fw-bold barbs_red">{{ dog.name }}</span>
+                <i class="bi bi-gender-{{ dog.sex|lower }} gender_{{ dog.sex|lower }} fw-bold" title="{{ dog.sex }}"></i>
               </div>
             </div>
+            <div class="row">
+              <div class="col fw-bold text-dark" style="font-size:smaller;">{{ dog.age }}</div>
+            </div>
+            <div class="row">
+              <div class="col text-dark" style="font-size:smaller;">
+                {{ dog.primary_breed }}
+                {% if dog.secondary_breed %}
+                  &amp; {{ dog.secondary_breed }}
+                {% endif %}
+              </div>
+            </div>
+
           </a>
         </div>
 
       {% endfor %}
     </div>
-  </div>
+
 {% else %}
   <div class="w-100 text-center">
     <div class="mt-4">
