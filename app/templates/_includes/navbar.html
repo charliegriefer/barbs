@@ -1,0 +1,56 @@
+<div class="container text-center d-flex align-items-center justify-content-center">
+
+  <nav nav class="navbar navbar-expand-lg" aria-label="">
+    <div class="container">
+      <a class="navbar-brand blogo"><img src="{{ url_for('static', filename='img/logo_sm.png') }}" class="img-fluid" /></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#searchNavbar" aria-controls="searchNavbar" aria-expanded="false" aria-label="">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse mx-auto" id="searchNavbar">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-item" onclick="doRedirect('https://www.barbsdogrescue.org', 'home_subnav')" href="" data-bs-toggle="dropdown" aria-expanded="false">Home</a>
+            <ul class="dropdown-menu" id="home_subnav">
+              <li><a class="dropdown-item" href="https://www.barbsdogrescue.org/our-story">Our Story</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="https://www.barbsdogrescue.org/blog">Rescue Blog</a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-item" onclick="doRedirect('https://search.barbsdogrescue.org', 'adopt_subnav');" href="" data-bs-toggle="dropdown" aria-expanded="false">Adopt a Dog</a>
+            <ul class="dropdown-menu" id="adopt_subnav">
+              <li><a class="dropdown-item" href="https://www.barbsdogrescue.org/happy-endings">Happy Endings</a></li>
+              <li><a class="dropdown-item" href="https://www.barbsdogrescue.org/adoption-criteria">Adoption Criteria</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-item" onclick="doRedirect('https://www.barbsdogrescue.org/donate', 'donate_subnav')" href="" data-bs-toggle="dropdown" aria-expanded="false">Donate</a>
+            <ul class="dropdown-menu" id="donate_subnav">
+              <li><a class="dropdown-item" href="https://www.barbsdogrescue.org/happy-endings">Happy Endings</a></li>
+              <li><a class="dropdown-item" href="https://www.barbsdogrescue.org/adoption-criteria">Adoption Criteria</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-item" onclick="doRedirect('https://www.barbsdogrescue.org/volunteer', 'volunteer_subnav')" href="" data-bs-toggle="dropdown" aria-expanded="false">Volunteer</a>
+            <ul class="dropdown-menu" id="volunteer_subnav">
+              <li><a class="dropdown-item" href="https://www.barbsdogrescue.org/pawsomegetaways">Take a Shelter Dog on Vacation</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-item" onclick="doRedirect('https://www.barbsdogrescue.org/contact-us', 'contact_subnav')" href="" data-bs-toggle="dropdown" aria-expanded="false">Contact Us</a>
+            <ul class="dropdown-menu" id="contact_subnav">
+              <li><a class="dropdown-item" href="https://www.barbsdogrescue.org/faq">FAQ</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+</div>

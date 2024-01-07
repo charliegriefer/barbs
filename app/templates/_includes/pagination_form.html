@@ -1,29 +1,25 @@
-<div class="container">
-  <div class="row">
-    {% if dogs|length > 0 %}
-      <div class="col pl-2 pt-2">
-        {% set min = ((current_page - 1) * per_page) + 1 %}
-        {% set max = min + per_page - 1 %}
-        Displaying
-        {% if dogs|length != 1 %}
-          <span class="barbs_red">{{ min }}</span> - <span class="barbs_red">{% if max > total_dogs %}{{ total_dogs }}{% else %}{{ max }}{% endif %}</span> of
-        {% endif %}
-        <span class="font-weight-bold barbs_red">{{ total_dogs }}</span> Record{% if total_dogs != 1%}s{% endif %}
-      </div>
-      <div class="col pr-0 pb-2 text-right">
-        <div class="container">
-          <div class="row justify-content-end pt-1">
-            <div class="col text-right align-baseline pt-1">
-              {{ pagination_form.per_page.label(class="form-label") }}
-            </div>
-            <div class="col-2 text-right p-0 align-baseline">
-              {{ pagination_form.per_page(class="form-control", id="per_page_select") }}
-            </div>
-          </div>
+<div class="row ps-2 ms-0"">
+  {% if dogs|length > 0 %}
+    <div class="col-7 ps-0 pt-2">
+      {% set min = ((current_page - 1) * per_page) + 1 %}
+      {% set max = min + per_page - 1 %}
+      Displaying
+      {% if dogs|length != 1 %}
+        <span class="barbs_red">{{ min }}</span> - <span class="barbs_red">{% if max > total_dogs %}{{ total_dogs }}{% else %}{{ max }}{% endif %}</span> of
+      {% endif %}
+      <span class="font-weight-bold barbs_red">{{ total_dogs }}</span> Record{% if total_dogs != 1%}s{% endif %}
+    </div>
+    <div class="col-4 pe-0 pb-2">
+      <div class="row pt-1">
+        <div class="col-6 text-right align-baseline pt-1">
+          {{ pagination_form.per_page.label(class="form-label") }}
+        </div>
+        <div class="col p-0 align-baseline">
+          {{ pagination_form.per_page(class="form-select w-auto", id="per_page_select") }}
         </div>
       </div>
-    {% else %}
-      &nbsp;
-    {% endif %}
-  </div>
+    </div>
+  {% else %}
+    &nbsp;
+  {% endif %}
 </div>
