@@ -105,8 +105,9 @@
   </div>
 
   <script>
+    console.log(document.referrer);
     function goBack() {
-      if (document.referer) {
+      if (document.referrer) {
         window.history.back();
       } else {
         location.href = "https://search.barbsdogrescue.org";
