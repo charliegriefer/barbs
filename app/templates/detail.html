@@ -1,17 +1,15 @@
 {% extends "base.html" %}
 
-{% set main_class = "container-fluid" %}
-
 {% block content %}
-  <div class="{{ main_class }} mt-2">
+  <div class="container mt-2 mb-4">
     <div class="row">
-      <div class="col-6">
+      <div class="col-sm">
         {% set img_url = dog.images[0].get("image").get("url") %}
-        <img src="{{ img_url }}" class="w-100" alt="{{ dog.name }}" title="{{ dog.name }}" />
+        <img src="{{ img_url }}" class="rounded img-fluid mb-4" alt="{{ dog.name }}" title="{{ dog.name }}" />
       </div>
-      <div class="col-6 pl-0">
 
-        <div class="row pl-3">
+      <div class="col-sm ms-2 ps-0 pe-2">
+        <div class="row ps-0">
           <h1>
             <span class="font-weight-bold barbs_red">{{ dog.name }}</span>
           </h1>
@@ -21,86 +19,71 @@
           <a href="mailto:barbsdogrescue@gmail.com?subject=Inquiry about {{ dog.name }}" class="cglink">Inquire about {{ dog.name }}</a>
         </div>
 
-        <div class="container py-2 pl-4 ml-0 border border-dark rounded">
-          <div class="row">
-            <div class="col-4 pl-1 font-weight-bold">Sex:</div>
-            <div class="col ml-0 pl-0">{{ dog.sex }}</div>
+        <div class="p-2 ms-0 border border-dark rounded">
+          <div>
+            <span class="fw-bold pe-2">Sex:</span> {{ dog.sex }}
           </div>
-          <div class="row">
-            <div class="col-4 pl-1 font-weight-bold">Size:</div>
-            <div class="col ml-0 pl-0">{{ dog.size }}</div>
+          <div>
+            <span class="fw-bold pe-2">Size:</span> {{ dog.size }}
           </div>
-          <div class="row">
-            <div class="col-4 pl-1 font-weight-bold">Weight:</div>
-            <div class="col ml-0 pl-0">{{ dog.weight }} lbs</div>
+          <div>
+            <span class="fw-bold pe-2">Weight:</span> {{ dog.weight }}
           </div>
         </div>
 
         <div class="row">&nbsp;</div>
 
-        <div class="container py-2 pl-4 ml-0 border border-dark rounded">
-          <div class="row">
-            <div class="col-4 pl-1 font-weight-bold">Age:</div>
-            <div class="col ml-0 pl-0">{{ dog.age }} ({{ dog.numerical_age }})</div>
+        <div class="p-2 ms-0 border border-dark rounded">
+          <div>
+            <span class="fw-bold pe-2">Age:</span> {{ dog.age }} ({{ dog.numerical_age }})
           </div>
-          <div class="row">
-            <div class="col-4 pl-1 font-weight-bold">Date of Birth:</div>
-            <div class="col ml-0 pl-0">{{ dog.date_of_birth }}</div>
+          <div>
+            <span class="fw-bold pe-2">Date of Birth:</span> {{ dog.date_of_birth }}
           </div>
-          <div class="row">
-            <div class="col-4 pl-1 font-weight-bold">Date Acquired:</div>
-            <div class="col ml-0 pl-0">{{ dog.date_aquired }}</div>
+          <div>
+            <span class="fw-bold pe-2">Date Acquired:</span> {{ dog.date_aquired }}
           </div>
         </div>
 
         <div class="row">&nbsp;</div>
 
-        <div class="container py-2 pl-4 ml-0 border border-dark rounded">
-          <div class="row">
-            <div class="col-4 pl-1 font-weight-bold">Breed(s):</div>
-            <div class="col ml-0 pl-0">{{ dog.all_breeds | replace(", ,", "") }}</div>
+        <div class="p-2 ms-0 border border-dark rounded">
+          <div>
+            <span class="fw-bold pe-2">Breed(s):</span> {{ dog.all_breeds | replace(", ,", "") }}
           </div>
-          <div class="row">
-            <div class="col-4 pl-1 font-weight-bold">Shedding:</div>
-            <div class="col ml-0 pl-0">{{ dog.shedding }}</div>
+          <div>
+            <span class="fw-bold pe-2">Shedding:</span> {{ dog.shedding }}
           </div>
         </div>
 
         <div class="row">&nbsp;</div>
 
-        <div class="container py-2 pl-4 ml-0 border border-dark rounded">
-          <div class="row">
-            <div class="col-4 pl-1 font-weight-bold">Shots Up to Date:</div>
-            <div class="col ml-0 pl-0">{{ dog.shots_up_to_date }}</div>
+        <div class="p-2 ms-0 border border-dark rounded">
+          <div>
+            <span class="fw-bold pe-2">Shots Up to Date:</span> {{ dog.shots_up_to_date }}
           </div>
-          <div class="row">
-            <div class="col-4 pl-1 font-weight-bold">Is Spayed/Neutered:</div>
-            <div class="col ml-0 pl-0">{{ dog.is_spayed }}</div>
+          <div>
+            <span class="fw-bold pe-2">Spayed/Neutered:</span> {{ dog.is_spayed }}
           </div>
-          <div class="row">
-            <div class="col-4 pl-1 font-weight-bold">Is Hypoallergenic:</div>
-            <div class="col ml-0 pl-0">{{ dog.is_hypoallergenic }}</div>
+          <div>
+            <span class="fw-bold pe-2">Hypoallergenic:</span> {{ dog.is_hypoallergenic }}
           </div>
-          <div class="row">
-            <div class="col-4 pl-1 font-weight-bold">Is Housebroken:</div>
-            <div class="col ml-0 pl-0">{{ dog.is_housebroken }}</div>
+          <div>
+            <span class="fw-bold pe-2">Housebroken:</span> {{ dog.is_housebroken }}
           </div>
-          <div class="row">
-            <div class="col-4 pl-1 font-weight-bold">Has Special Needs:</div>
-            <div class="col ml-0 pl-0">{{ dog.has_special_need }}</div>
+          <div>
+            <span class="fw-bold pe-2">Has Special Needs:</span> {{ dog.has_special_needs }}
           </div>
         </div>
 
         <div class="row">&nbsp;</div>
 
-        <div class="container py-2 pl-4 ml-0 border border-dark rounded">
-          <div class="row">
-            <div class="col-4 pl-1 font-weight-bold">Temperament:</div>
-            <div class="col ml-0 pl-0">{{ dog.temperament }}</div>
+        <div class="p-2 ms-0 border border-dark rounded">
+          <div>
+            <span class="fw-bold pe-2">Temperament:</span> {{ dog.temperament }}
           </div>
-          <div class="row">
-            <div class="col-4 pl-1 font-weight-bold">Description:</div>
-            <div class="col ml-0 pl-0">{{ dog.description|striptags }}</div>
+          <div>
+            <span class="fw-bold pe-2">Description:</span> {{ dog.description|striptags }}
           </div>
         </div>
 
@@ -109,21 +92,17 @@
           <a href="mailto:barbsdogrescue@gmail.com?subject=Inquiry about {{ dog.name }}" class="cglink">Inquire about {{ dog.name }}</a>
         </div>
 
-        <div class="container ml-0">
-          <div class="row align-text-bottom">
-            <div class="col mt-4 pl-1">
-              <button class="btn btn-primary" onclick="goBack()">
-                <i class="fa-solid fa-backward pr-2"></i>
-                Back to Search
-              </button>
-            </div>
+        <div class="row align-text-bottom">
+          <div class="col mt-4 ps-2">
+            <button class="btn btn-primary" onclick="goBack()">
+              <i class="fa-solid fa-backward pr-2"></i>
+              Back to Search
+            </button>
           </div>
         </div>
-
       </div>
     </div>
   </div>
-
 
   <script>
     function goBack() {

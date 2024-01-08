@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="container mt-2 my-3 px-1 border-bottom">
+  <div class="container mt-2 my-3 px-3 border-bottom">
     <div class="mb-2">We have dogs of all ages, breeds, sizes, and personalities available for adoption. From wiggling puppies to gentle seniors, there are so many amazing dogs at Barb’s Dog Rescue who are looking for their forever homes.</div>
     <div class="mb-2">Every dog in our care has a story. Some were lovingly surrendered by families who could not care for them. Many of our dogs were homeless, living on the streets. And sadly, many have survived abuse or painful injuries. Each is looking for someone to love them.</div>
     <div class="mb-2">
@@ -14,14 +14,14 @@
 
   <div class="container mt-2">
     <div class="row mt-4">
-      <div class="col">&nbsp;</div>
+      <div class="col d-none d-sm-block">&nbsp;</div>
       <div class="col-9">
         {% include "_includes/pagination_form.html" %}
       </div>
     </div>
     <div class="row mt-2">
-      <div class="col border-end">
-          {% include "_includes/filter_form.html" %}
+      <div class="col">
+        {% include "_includes/filter_form.html" %}
       </div>
       <div class="col-9">
         {% include "_includes/available_dogs.html" %}
