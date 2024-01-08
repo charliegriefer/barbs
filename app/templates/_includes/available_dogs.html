@@ -3,7 +3,7 @@
     <div class="row">
       {% for dog in dogs %}
 
-        <div class="col-6 col-md-4 col-lg-2 py-2 mx-2 mb-4 dog_search_result bg-light text-center" style="cursor:pointer;" id="{{ dog.id }}">
+        <div class="col-5 col-md-4 col-lg-2 py-2 mx-2 mb-4 dog_search_result bg-light text-center" style="cursor:pointer;" id="{{ dog.id }}">
           <a href="{{ url_for('main.dog_detail', dog_id=dog.id) }}">
             <img src="{{ dog.images[0].get('image').get('url') }}" class="img-fluid" />
 
