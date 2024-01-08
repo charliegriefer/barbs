@@ -42,7 +42,11 @@ def index():
     search_form.breed.choices.insert(0, ("", "Any"))
 
     # pagination
-    per_page = int(request.args.get("per_page", 25))
+    if request.args.get("per_page") == "0":
+        per_page = len(available_dogs)
+    else:
+        per_page = int(request.args.get("per_page", 25))
+
     current_page = request.args.get("current_page", 1)
     pagination_form["per_page"].process_data(per_page)
 
