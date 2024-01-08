@@ -1,6 +1,6 @@
 {% if dogs|length > 0 %}
   {% for dog_row in dogs | batch(4, "&nbsp;") %}
-    <div class="row ms-1 w-auto justify-content-between">
+    <div class="row ms-1 w-100 justify-content-between">
       {% for dog in dog_row %}
         {% if dog != "&nbsp;" %}
         <div class="col-md-3 col-6 p-2 mb-4 dog_search_result bg-light text-center" style="cursor:pointer;" id="{{ dog.id }}">

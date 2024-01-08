@@ -14,16 +14,16 @@
 
   <div class="container mt-2">
     <div class="row mt-4">
-      <div class="col d-none d-sm-block">&nbsp;</div>
+      <div class="col d-none d-sm-block"></div>
       <div class="col-9">
         {% include "_includes/pagination_form.html" %}
       </div>
     </div>
     <div class="row mt-2">
-      <div class="col">
+      <div class="col-sm-3">
         {% include "_includes/filter_form.html" %}
       </div>
-      <div class="col-9">
+      <div class="col-sm-9">
         {% include "_includes/available_dogs.html" %}
         {% if dogs|length > 0 %}
           {% include "_includes/pagination_nav.html" %}
