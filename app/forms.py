@@ -19,4 +19,4 @@ class SearchForm(FlaskForm):
     is_ok_with_other_kids = BooleanField("Good with Kids")
 
 class PaginationForm(FlaskForm):
-    per_page = SelectField("Results per Page:", choices=[(25, 25), (50, 50), (100, 100), (0, "All")])
+    per_page = SelectField("Results per Page:", choices=[(24, 24), (48, 48), (96, 96), (999, "All")])
