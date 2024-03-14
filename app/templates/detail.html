@@ -4,8 +4,12 @@
   <div class="container mt-2 mb-4">
     <div class="row">
       <div class="col-sm">
+        {% if dog.images %}
         {% set img_url = dog.images[0].get("image").get("url") %}
         <img src="{{ img_url }}" class="rounded img-fluid mb-4" alt="{{ dog.name }}" title="{{ dog.name }}" />
+        {% else %}
+        <img src="{{ url_for('static', filename='img/img_404.png') }}" class="rounded img-fluid mb-4" alt="{{ dog.name }}" title="{{ dog.name }}" />
+        {% endif %}
       </div>
 
       <div class="col-sm ms-2 ps-0 pe-2">
