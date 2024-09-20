@@ -3,6 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% if (dog) and (dog.images) %}
+    {% set img_url = dog.images[0].get("image").get("url") %}
+    <meta data-rh="true" property="og:image" content="{{ img_url }}" />
+    {% endif %}
     {% if title %}
       <title>{{ title }}</title>
     {% else %}
