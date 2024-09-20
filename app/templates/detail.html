@@ -20,7 +20,13 @@
         </div>
 
         <div class="mb-3">
-          <a href="mailto:barbsdogrescue@gmail.com?subject=Inquiry about {{ dog.name }}" class="cglink">Inquire about {{ dog.name }}</a>
+          <a href="mailto:barbsdogrescue@gmail.com?subject=Inquiry about {{ dog.name }}" class="cglink">Inquire about {{ dog.name }}</a> |
+          <a href="#" onclick="return false;" class="cglink" id="copylink">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up" viewBox="0 0 16 16" style="margin-bottom:4px;">
+              <path fill-rule="evenodd" d="M3.5 6a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 1 0-1h2A1.5 1.5 0 0 1 14 6.5v8a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-8A1.5 1.5 0 0 1 3.5 5h2a.5.5 0 0 1 0 1z"/>
+              <path fill-rule="evenodd" d="M7.646.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 1.707V10.5a.5.5 0 0 1-1 0V1.707L5.354 3.854a.5.5 0 1 1-.708-.708z"/>
+            </svg>
+            <span id="cl">Share Link</span></a>
         </div>
 
         <div class="p-2 ms-0 border border-dark rounded">
@@ -109,6 +115,15 @@
   </div>
 
   <script>
+    const source = document.querySelector("#copylink");
+    source.addEventListener("click", (event) => {
+      navigator.clipboard.writeText(location.href);
+      document.getElementById("cl").innerHTML = "Link Copied!";
+      setTimeout(function() {
+        document.getElementById("cl").innerHTML = "Share Link";
+      }, 2000);
+    });
+
     function goBack() {
       if (document.referrer) {
         window.history.back();
