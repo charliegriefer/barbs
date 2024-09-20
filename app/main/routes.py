@@ -1,9 +1,8 @@
-import json
 import math
 from typing import Dict, List
 
 import requests
-from flask import current_app, flash, render_template, request, url_for
+from flask import current_app, render_template, request, url_for
 
 from app.extensions import cache
 from app.forms import PaginationForm, SearchForm
@@ -20,20 +19,19 @@ def calculate_page_link(page: int, qs: str) -> str:
 @main_blueprint.before_request
 def load_available_dogs():
     if not cache.has("available_dogs"):
-        print("GETTING DOGS.... WHY???")
-        PETSTABLISHED_BASE_URL = current_app.config['PETSTABLISHED_BASE_URL']
-        PETSTABLISHED_PUBLIC_KEY = current_app.config['PETSTABLISHED_PUBLIC_KEY']
+        PETSTABLISHED_BASE_URL = current_app.config["PETSTABLISHED_BASE_URL"]
+        PETSTABLISHED_PUBLIC_KEY = current_app.config["PETSTABLISHED_PUBLIC_KEY"]
 
         pet_url = f"{PETSTABLISHED_BASE_URL}?public_key={PETSTABLISHED_PUBLIC_KEY}"
         pet_url += "&search[status]=Available&sort[order]=asc&sort[column]=name&pagination[limit]=100"
-
         available_dogs = []
         current_page = 1
         while True:
             tmp_url = f"{pet_url}&pagination[page]={current_page}"
             api_dogs = requests.get(tmp_url)
             dogs = api_dogs.json()
-            available_dogs.extend(dogs["collection"])
+            # filter out any non-Available dogs (see: issue #32)
+            available_dogs.extend([d for d in dogs["collection"] if d.get("status") == "Available"])
             if len(dogs["collection"]) == 100:
                 current_page += 1
             else:
@@ -52,7 +50,6 @@ def index():
     search_form.breed.choices = [(breed, breed) for breed in get_dog_breeds(available_dogs)]
     search_form.breed.choices.insert(0, ("", "Any"))
 
-    print("HERE: ", request.args.get("per_page"))
     # pagination
     if request.args.get("per_page") == "999":
         per_page = len(available_dogs)
