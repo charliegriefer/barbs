@@ -5,10 +5,44 @@
     <div class="row">
       <div class="col-sm">
         {% if dog.images %}
-        {% set img_url = dog.images[0].get("image").get("url") %}
-        <img src="{{ img_url }}" class="rounded img-fluid mb-4" alt="{{ dog.name }}" title="{{ dog.name }}" />
+          {% if dog.images | length > 1 %}
+            <div id="pupPics" class="carousel slide mb-4" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                {% for image in dog.images %}
+                  {% set img_url = image.get("image").get("url") %}
+                  <div class="carousel-item {% if loop.first %}active{% endif %}">
+                    <img src="{{ img_url }}" class="d-block w-100 rounded" alt="{{ dog.name }}" title="{{ dog.name }}" />
+                  </div>
+                {% endfor %}
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#pupPics" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#pupPics" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+            
+            <!-- Thumbnail indicators -->
+            <div class="carousel-thumbnails d-flex justify-content-center flex-wrap gap-2 mb-4">
+              {% for image in dog.images %}
+                {% set img_url = image.get("image").get("url") %}
+                <img src="{{ img_url }}" 
+                     class="carousel-thumbnail {% if loop.first %}active{% endif %}" 
+                     data-bs-target="#pupPics" 
+                     data-bs-slide-to="{{ loop.index0 }}"
+                     alt="Thumbnail {{ loop.index }}"
+                     style="width: 60px; height: 60px; object-fit: cover; cursor: pointer; border-radius: 8px; border: 2px solid transparent; transition: all 0.3s ease;">
+              {% endfor %}
+            </div>
+          {% else %}
+            {% set img_url = dog.images[0].get("image").get("url") %}
+            <img src="{{ img_url }}" class="rounded img-fluid mb-4" alt="{{ dog.name }}" title="{{ dog.name }}" />
+          {% endif %}
         {% else %}
-        <img src="{{ url_for('static', filename='img/img_404.png') }}" class="rounded img-fluid mb-4" alt="{{ dog.name }}" title="{{ dog.name }}" />
+            <img src="{{ url_for('static', filename='img/img_404.png') }}" class="rounded img-fluid mb-4" alt="{{ dog.name }}" title="{{ dog.name }}" />
         {% endif %}
       </div>
 
@@ -131,5 +165,33 @@
         location.href = "https://search.barbsdogrescue.org";
       }
     }
+
+    // Handle carousel thumbnail clicks and active states
+    document.addEventListener('DOMContentLoaded', function() {
+      const carousel = document.querySelector('#pupPics');
+      const thumbnails = document.querySelectorAll('.carousel-thumbnail');
+      
+      if (carousel && thumbnails.length > 0) {
+        // Add click event listeners to thumbnails
+        thumbnails.forEach((thumbnail, index) => {
+          thumbnail.addEventListener('click', function() {
+            // Remove active class from all thumbnails
+            thumbnails.forEach(thumb => thumb.classList.remove('active'));
+            // Add active class to clicked thumbnail
+            this.classList.add('active');
+          });
+        });
+        
+        // Listen for carousel slide events to update thumbnail active state
+        carousel.addEventListener('slide.bs.carousel', function(event) {
+          // Remove active class from all thumbnails
+          thumbnails.forEach(thumb => thumb.classList.remove('active'));
+          // Add active class to corresponding thumbnail
+          if (thumbnails[event.to]) {
+            thumbnails[event.to].classList.add('active');
+          }
+        });
+      }
+    });
   </script>
 {% endblock %}
