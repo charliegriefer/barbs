@@ -31,7 +31,9 @@ def load_available_dogs():
             api_dogs = requests.get(tmp_url)
             dogs = api_dogs.json()
             # filter out any non-Available dogs (see: issue #32)
-            available_dogs.extend([d for d in dogs["collection"] if d.get("status") == "Available"])
+            available_dogs.extend(
+                [d for d in dogs["collection"] if d.get("status") == "Available"]
+            )
             if len(dogs["collection"]) == 100:
                 current_page += 1
             else:
@@ -47,7 +49,9 @@ def index():
     pagination_form = PaginationForm()
 
     # create the list of breeds to populate the dropdown
-    search_form.breed.choices = [(breed, breed) for breed in get_dog_breeds(available_dogs)]
+    search_form.breed.choices = [
+        (breed, breed) for breed in get_dog_breeds(available_dogs)
+    ]
     search_form.breed.choices.insert(0, ("", "Any"))
 
     # pagination
@@ -66,8 +70,11 @@ def index():
             if key in ["sex", "age", "size", "shedding"]:
                 available_dogs = [dog for dog in available_dogs if dog[key] == value]
             if key == "breed":
-                available_dogs = [dog for dog in available_dogs
-                                  if value in [dog["primary_breed"], dog["secondary_breed"]]]
+                available_dogs = [
+                    dog
+                    for dog in available_dogs
+                    if value in [dog["primary_breed"], dog["secondary_breed"]]
+                ]
             search_form[key].process_data(value)
 
     # carry through the number of total dogs. would get overwritten due to pagination
@@ -75,8 +82,8 @@ def index():
 
     # pagination
     view_start = (int(current_page) - 1) * per_page
-    available_dogs = available_dogs[view_start:view_start + per_page]
-    number_of_pages = math.ceil(total_dogs/per_page)
+    available_dogs = available_dogs[view_start: view_start + per_page]
+    number_of_pages = math.ceil(total_dogs / per_page)
 
     # for pagination links
     qs = []
@@ -84,30 +91,34 @@ def index():
         if key != "current_page":
             qs.append(f"{key}={value}")
 
-    return render_template("index.html",
-                           title="Adopt | Puerto Peñasco | Barb's Dog Rescue",
-                           pagination_form=pagination_form,
-                           search_form=search_form,
-                           dogs=available_dogs,
-                           total_dogs=total_dogs,
-                           current_page=int(current_page),
-                           per_page=int(per_page),
-                           number_of_pages=int(number_of_pages),
-                           calculate_page_link=calculate_page_link,
-                           qs="&".join(qs))
+    return render_template(
+        "index.html",
+        title="Adopt | Puerto Peñasco | Barb's Dog Rescue",
+        pagination_form=pagination_form,
+        search_form=search_form,
+        dogs=available_dogs,
+        total_dogs=total_dogs,
+        current_page=int(current_page),
+        per_page=int(per_page),
+        number_of_pages=int(number_of_pages),
+        calculate_page_link=calculate_page_link,
+        qs="&".join(qs),
+    )
 
 
 @main_blueprint.route("/detail/<int:dog_id>")
 def dog_detail(dog_id: int):
     available_dogs = cache.get("available_dogs")
-
     dog = next((item for item in available_dogs if item["id"] == dog_id), None)
+
     if not dog:
         return render_template("404.html")
 
-    return render_template("detail.html",
-                           title=f"Adopt | Puerto Peñasco | Barb's Dog Rescue | {dog.get('name')}",
-                           dog=dog)
+    return render_template(
+        "detail.html",
+        title=f"Adopt | Puerto Peñasco | Barb's Dog Rescue | {dog.get('name')}",
+        dog=dog,
+    )
 
 
 def get_dog_breeds(available_dogs: List[Dict[str, str]]) -> List[str]:
@@ -115,8 +126,16 @@ def get_dog_breeds(available_dogs: List[Dict[str, str]]) -> List[str]:
     Given a list of available dogs, return a list of distinct breeds
     """
     breeds = set()
-    [breeds.add(breed.get("primary_breed")) for breed in available_dogs if breed.get("primary_breed") != ""]
-    [breeds.add(breed.get("secondary_breed")) for breed in available_dogs if breed.get("secondary_breed") != ""]
+    [
+        breeds.add(breed.get("primary_breed"))
+        for breed in available_dogs
+        if breed.get("primary_breed") != ""
+    ]
+    [
+        breeds.add(breed.get("secondary_breed"))
+        for breed in available_dogs
+        if breed.get("secondary_breed") != ""
+    ]
 
     form_breeds = list(breeds)
     form_breeds.sort()
