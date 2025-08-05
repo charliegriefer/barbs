@@ -116,5 +116,19 @@ def page_not_found(e):
     return render_template("404.html"), 404
 
 
+@app.route("/debug-static")
+def debug_static():
+    """Debug static file configuration"""
+    return f"""
+    <h3>Flask Static Debug Info:</h3>
+    <p><strong>Static folder:</strong> {app.static_folder}</p>
+    <p><strong>Static URL path:</strong> {app.static_url_path}</p>
+    <p><strong>Root path:</strong> {app.root_path}</p>
+    <p><strong>Instance path:</strong> {app.instance_path}</p>
+    <br>
+    <p><a href="/static/css/barbs.css">Test CSS link</a></p>
+    """
+
+
 if __name__ == "__main__":
     app.run(debug=True)
