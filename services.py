@@ -95,3 +95,81 @@ class DogService:
         total_pages = math.ceil(total_dogs / per_page)
 
         return paginated_dogs, total_pages
+
+    def extract_filters(self, request_args: Dict) -> Dict:
+        """Extract valid filters from request arguments"""
+        return {
+            key: value
+            for key, value in request_args.items()
+            if key in ["sex", "age", "size", "shedding", "breed"] and value
+        }
+
+    def get_pagination_settings(
+        self, request_args: Dict, total_dogs: int
+    ) -> Tuple[int, int]:
+        """Extract and validate pagination settings"""
+        per_page = int(request_args.get("per_page", 24))
+        if request_args.get("per_page") == "999":
+            per_page = total_dogs
+
+        current_page = int(request_args.get("current_page", 1))
+        return per_page, current_page
+
+    def process_search_request(self, request_args: Dict) -> Dict:
+        """Process a complete search request with filtering and pagination"""
+        # Get all dogs
+        available_dogs = self.get_available_dogs()
+
+        # Extract filters and apply them
+        filters = self.extract_filters(request_args)
+        filtered_dogs = self.filter_dogs(available_dogs, filters)
+        total_dogs = len(filtered_dogs)
+
+        # Handle pagination
+        per_page, current_page = self.get_pagination_settings(
+            request_args, len(available_dogs)
+        )
+        paginated_dogs, number_of_pages = self.paginate_dogs(
+            filtered_dogs, current_page, per_page
+        )
+
+        # Get breeds for form choices
+        breeds = self.get_dog_breeds(available_dogs)
+
+        return {
+            "dogs": paginated_dogs,
+            "total_dogs": total_dogs,
+            "current_page": current_page,
+            "per_page": per_page,
+            "number_of_pages": number_of_pages,
+            "breeds": breeds,
+            "filters": filters,
+        }
+
+    def prepare_forms(self, search_data: Dict):
+        """Prepare and configure forms with current data"""
+        from forms import PaginationForm, SearchForm
+
+        # Initialize forms
+        search_form = SearchForm()
+        pagination_form = PaginationForm()
+
+        # Populate breed choices
+        search_form.breed.choices = [("", "Any")] + [
+            (breed, breed) for breed in search_data["breeds"]
+        ]
+
+        # Set form values from filters
+        for key, value in search_data["filters"].items():
+            if hasattr(search_form, key):
+                getattr(search_form, key).process_data(value)
+
+        # Set pagination form value (convert back to 999 for "All" option)
+        pagination_value = (
+            999
+            if search_data["per_page"] == len(self.get_available_dogs())
+            else search_data["per_page"]
+        )
+        pagination_form.per_page.process_data(pagination_value)
+
+        return search_form, pagination_form
