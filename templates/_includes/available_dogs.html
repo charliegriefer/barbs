@@ -4,7 +4,7 @@
       {% for dog in dog_row %}
         {% if dog != "&nbsp;" %}
           <div class="col-md-3 col-6 p-2 mb-4 dog_search_result bg-light text-center" style="cursor:pointer;" id="{{ dog.id }}">
-            <a href="{{ url_for('main.dog_detail', dog_id=dog.id) }}">
+            <a href="{{ url_for('dog_detail', dog_id=dog.id) }}">
               {% if dog.images %}
               <img src="{{ dog.images[0].get('image').get('url') }}" />
               {% else %}
