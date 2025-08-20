@@ -9,7 +9,11 @@ RUN apk add --no-cache \
     gcc \
     musl-dev \
     linux-headers \
-    nginx
+    nginx \
+    certbot \
+    certbot-nginx \
+    openssl \
+    dcron
 
 # Copy requirements first (for better caching)
 COPY requirements.txt .
@@ -31,11 +35,16 @@ RUN adduser -D -s /bin/sh app \
     && chown -R app:app /app \
     && mkdir -p /run/nginx \
     && mkdir -p /var/log/nginx \
+    && mkdir -p /etc/letsencrypt \
+    && mkdir -p /var/lib/letsencrypt \
+    && mkdir -p /var/log/letsencrypt \
     && chmod 755 /run/nginx \
-    && chmod 755 /var/log/nginx
+    && chmod 755 /var/log/nginx \
+    && chmod 755 /etc/letsencrypt \
+    && chmod 755 /var/lib/letsencrypt
 
-# Expose port (nginx will listen on 80, gunicorn on 8000 internally)
-EXPOSE 80
+# Expose ports (HTTP and HTTPS)
+EXPOSE 80 443
 
 # Health check (check nginx instead of gunicorn directly)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
