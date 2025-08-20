@@ -24,11 +24,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application code
 COPY . .
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+# Copy Docker configuration files
+COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/start.sh .
+COPY docker/ssl-setup.sh .
 
-# Make start script executable
-RUN chmod +x start.sh
+# Make scripts executable
+RUN chmod +x start.sh ssl-setup.sh
 
 # Create non-root user and set up nginx directories as root
 RUN adduser -D -s /bin/sh app \
