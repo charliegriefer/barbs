@@ -82,4 +82,6 @@ def page_not_found(e):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Only enable debug mode in development
+    debug_mode = os.environ.get("FLASK_ENV", "production") == "development"
+    app.run(debug=debug_mode)
