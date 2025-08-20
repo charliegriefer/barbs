@@ -9,10 +9,10 @@
   "containerDefinitions": [
     {
       "name": "barbs-container",
-      "image": "223741390366.dkr.ecr.us-west-1.amazonaws.com/barbs-repo:latest",
+      "image": "223741390366.dkr.ecr.us-west-1.amazonaws.com/barbs-repo:nginx-latest",
       "portMappings": [
         {
-          "containerPort": 8000,
+          "containerPort": 80,
           "protocol": "tcp"
         }
       ],
