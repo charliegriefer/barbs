@@ -9,7 +9,7 @@
   "containerDefinitions": [
     {
       "name": "barbs-container",
-      "image": "223741390366.dkr.ecr.us-west-1.amazonaws.com/barbs-repo:ssl-fixed",
+      "image": "223741390366.dkr.ecr.us-west-1.amazonaws.com/barbs-repo:delayed-ssl",
       "portMappings": [
         {
           "containerPort": 80,
