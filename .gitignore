@@ -10,3 +10,12 @@ dist/
 venv/
 .env
 .DS_Store
+
+# AWS deployment files with sensitive information
+task-definition.json
+ecr-policy.json
+
+# SSL certificate files (if generated locally)
+*.pem
+*.key
+*.crt

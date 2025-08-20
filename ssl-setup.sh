@@ -13,7 +13,7 @@ echo "Attempting SSL certificate generation..."
 certbot certonly \
     --webroot \
     --webroot-path=/var/lib/letsencrypt \
-    --email charlie@barbsdogrescue.org \
+    --email ${SSL_EMAIL:-charlie@barbsdogrescue.org} \
     --agree-tos \
     --no-eff-email \
     --non-interactive \
