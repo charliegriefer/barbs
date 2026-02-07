@@ -1,4 +1,5 @@
 import math
+import time
 from typing import Dict, List, Tuple
 
 import requests
@@ -12,8 +13,38 @@ class DogService:
         self.cache = cache
 
     def load_available_dogs(self) -> None:
-        """Load available dogs from API and cache them"""
-        if not self.cache.has("available_dogs"):
+        """Load available dogs from API and cache them (Redis-safe across Gunicorn workers)."""
+
+        # Fast path: already cached
+        cached = self.cache.get("available_dogs")
+        if cached is not None:
+            return
+
+        lock_key = "available_dogs_lock"
+
+        # Try to become the one worker that populates the cache
+        got_lock = self._acquire_lock(lock_key, ttl_seconds=45)
+
+        if not got_lock:
+            # Another worker is fetching. Wait briefly for cache to appear.
+            # (This avoids hammering the API and avoids caching partial results.)
+            for _ in range(30):  # ~3 seconds total
+                time.sleep(0.1)
+                cached = self.cache.get("available_dogs")
+                if cached is not None:
+                    return
+
+            # If cache still isn't ready, fall through and fetch anyway (rare).
+            # This is a fail-open so the page still works.
+            # You could also just `return` here if you prefer.
+            got_lock = True
+
+        try:
+            # Double-check after acquiring lock (another worker may have populated it)
+            cached = self.cache.get("available_dogs")
+            if cached is not None:
+                return
+
             base_url = current_app.config["PETSTABLISHED_BASE_URL"]
             public_key = current_app.config["PETSTABLISHED_PUBLIC_KEY"]
 
@@ -25,7 +56,8 @@ class DogService:
 
             while True:
                 tmp_url = f"{pet_url}&pagination[page]={current_page}"
-                api_dogs = requests.get(tmp_url)
+                api_dogs = requests.get(tmp_url, timeout=15)
+                api_dogs.raise_for_status()
                 dogs = api_dogs.json()
 
                 # filter out any non-Available dogs (see: issue #32)
@@ -39,6 +71,10 @@ class DogService:
                     break
 
             self.cache.set("available_dogs", available_dogs, timeout=3600)
+
+        finally:
+            if got_lock:
+                self._release_lock(lock_key)
 
     def get_available_dogs(self) -> List[Dict]:
         """Get cached available dogs"""
@@ -173,3 +209,30 @@ class DogService:
         pagination_form.per_page.process_data(pagination_value)
 
         return search_form, pagination_form
+
+    def _acquire_lock(self, lock_key: str, ttl_seconds: int = 30) -> bool:
+        """
+        Acquire a Redis lock using SET NX EX.
+        Works when CACHE_TYPE is RedisCache and self.cache.cache is a redis.Redis client.
+        Returns True if lock acquired, False otherwise.
+        """
+        redis_client = getattr(self.cache, "cache", None)
+        if redis_client is None:
+            # Not Redis-backed (or cannot access client)
+            return True
+
+        try:
+            # SET lock_key "1" NX EX ttl_seconds
+            return bool(redis_client.set(lock_key, "1", nx=True, ex=ttl_seconds))
+        except Exception:
+            # If Redis hiccups, fail open rather than break the site
+            return True
+
+    def _release_lock(self, lock_key: str) -> None:
+        redis_client = getattr(self.cache, "cache", None)
+        if redis_client is None:
+            return
+        try:
+            redis_client.delete(lock_key)
+        except Exception:
+            pass

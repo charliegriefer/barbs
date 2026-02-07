@@ -22,7 +22,13 @@ app.config["PETSTABLISHED_BASE_URL"] = "https://petstablished.com/api/v2/public/
 app.config["PETSTABLISHED_PUBLIC_KEY"] = os.environ["PETSTABLISHED_PUBLIC_KEY"]
 
 # Initialize extensions
-cache = Cache(app, config={"CACHE_TYPE": "SimpleCache"})
+cache = Cache(
+    app,
+    config={
+        "CACHE_TYPE": "RedisCache",
+        "CACHE_REDIS_URL": "redis://127.0.0.1:6379/0",
+    },
+)
 csrf = CSRFProtect(app)
 
 # Initialize services
@@ -57,6 +63,7 @@ def index():
         number_of_pages=search_data["number_of_pages"],
         calculate_page_link=calculate_page_link,
         qs=build_query_string(request.args),
+        d=cache.get("available_dogs"),
     )
 
 
