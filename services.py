@@ -94,6 +94,15 @@ class DogService:
                 else:
                     break
 
+            # De-dupe dogs by ID (Petstablished can return duplicates, e.g. bonded pairs)
+            deduped = {}
+            for d in available_dogs:
+                dog_id = d.get("id")
+                if dog_id is not None:
+                    deduped[dog_id] = d
+
+            available_dogs = list(deduped.values())
+
             self.cache.set("available_dogs", available_dogs, timeout=3600)
 
         finally:
