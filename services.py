@@ -101,7 +101,10 @@ class DogService:
                 if dog_id is not None:
                     deduped[dog_id] = d
 
-            available_dogs = list(deduped.values())
+            available_dogs = sorted(
+                deduped.values(),
+                key=lambda d: ((d.get("name") or "").casefold(), d.get("id") or 0),
+            )
 
             self.cache.set("available_dogs", available_dogs, timeout=3600)
 
