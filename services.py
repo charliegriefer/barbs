@@ -55,17 +55,41 @@ class DogService:
             current_page = 1
 
             while True:
+
                 tmp_url = f"{pet_url}&pagination[page]={current_page}"
                 api_dogs = requests.get(tmp_url, timeout=15)
                 api_dogs.raise_for_status()
                 dogs = api_dogs.json()
+                tail = [
+                    (
+                        d.get("name"),
+                        d.get("id"),
+                        d.get("status"),
+                        d.get("bonded"),
+                        d.get("bonded_group_id"),
+                    )
+                    for d in dogs["collection"][-10:]
+                ]
+                current_app.logger.warning("PAGE %s tail=%s", current_page, tail)
+
+                import json
+
+                with open("page1.json", "w") as f:
+                    json.dump(dogs, f, indent=2)
 
                 # filter out any non-Available dogs (see: issue #32)
                 available_dogs.extend(
                     [d for d in dogs["collection"] if d.get("status") == "Available"]
                 )
+                current_app.logger.warning(
+                    "Petstablished page %s returned %s dogs",
+                    current_page,
+                    len(dogs["collection"]),
+                )
+                pagination = dogs.get("pagination") or {}
+                total_pages = int(pagination.get("total_pages", current_page))
 
-                if len(dogs["collection"]) == 100:
+                if current_page < total_pages:
                     current_page += 1
                 else:
                     break

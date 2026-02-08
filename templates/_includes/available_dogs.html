@@ -25,6 +25,11 @@
                   {% if dog.secondary_breed %}
                     &amp; {{ dog.secondary_breed }}
                   {% endif %}
+
+                  {% set bonded_ids = dog.get("grouped_pet_ids") %}
+                  {% if bonded_ids %}
+                     <br /><span class="badge bg-warning text-dark">Bonded Pair</span>
+                  {% endif%}
                 </div>
               </div>
             </a>
