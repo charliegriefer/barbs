@@ -1,69 +1,9 @@
-<style>
-  .dog-search-card {
-    border: 1px solid #dee2e6;
-    border-radius: 0.75rem;
-    background: #fff;
-    overflow: hidden;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-    height: 100%;
-  }
-
-  .dog-search-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0.35rem 1rem rgba(0, 0, 0, 0.08);
-  }
-
-  .dog-search-card a {
-    color: inherit;
-    text-decoration: none;
-    display: block;
-    height: 100%;
-  }
-
-  .dog-search-card img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    display: block;
-  }
-
-  .dog-search-card .dog-card-body {
-    padding: 0.9rem 0.85rem 1rem;
-  }
-
-  .dog-search-card .dog-name {
-    font-size: 1.15rem;
-    line-height: 1.2;
-  }
-
-  .dog-search-card .dog-meta-badges {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin: 0.55rem 0 0.65rem;
-  }
-
-  .dog-search-card .dog-meta-badges .badge {
-    padding: 0.45rem 0.7rem;
-    font-weight: 500;
-  }
-
-  .dog-search-card .dog-breed {
-    font-size: 0.95rem;
-    line-height: 1.35;
-  }
-
-  .dog-search-card .bonded-badge {
-    margin-top: 0.65rem;
-  }
-</style>
 {% if dogs|length > 0 %}
-  {% for dog_row in dogs | batch(4, "&nbsp;") %}
-    <div class="row ms-1 w-100 g-3">
+  {% for dog_row in dogs | batch(3, "&nbsp;") %}
+    <div class="row ms-1 w-100 g-4 mb-3">
       {% for dog in dog_row %}
         {% if dog != "&nbsp;" %}
-          <div class="col-md-3 col-6" id="{{ dog.id }}">
+          <div class="col-lg-4 col-sm-6" id="{{ dog.id }}">
             <div class="dog-search-card text-center" style="cursor:pointer;">
               <a href="{{ url_for('dog_detail', dog_id=dog.id) }}">
                 {% if dog.images %}
@@ -99,7 +39,7 @@
             </div>
           </div>
         {% else %}
-          <div class="col-md-3 col-6"></div>
+          <div class="col-lg-4 col-sm-6"></div>
         {% endif %}
       {% endfor %}
     </div>
