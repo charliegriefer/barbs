@@ -141,7 +141,7 @@ class DogService:
             if not value:
                 continue
 
-            if key in ["sex", "age", "size", "shedding"]:
+            if key in ["current_location", "sex", "age", "size", "shedding"]:
                 filtered_dogs = [dog for dog in filtered_dogs if dog.get(key) == value]
             elif key == "breed":
                 filtered_dogs = [
@@ -173,7 +173,8 @@ class DogService:
         return {
             key: value
             for key, value in request_args.items()
-            if key in ["sex", "age", "size", "shedding", "breed"] and value
+            if key in ["current_location", "sex", "age", "size", "shedding", "breed"]
+            and value
         }
 
     def get_pagination_settings(
