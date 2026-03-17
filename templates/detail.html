@@ -1,6 +1,42 @@
 {% extends "base.html" %}
 
 {% block content %}
+  <style>
+    .dog-profile-card {
+      height: 100%;
+    }
+
+    .dog-profile-card h5 {
+      color: #7a1f2b;
+      font-weight: 600;
+    }
+
+    .dog-profile-card .small.text-muted {
+      letter-spacing: 0.04em;
+    }
+
+    .dog-profile-card p {
+      line-height: 1.6;
+    }
+
+    .dog-profile-card h1 {
+      font-size: 2.4rem;
+    }
+
+    .badge.rounded-pill {
+      padding: 0.45rem 0.7rem;
+      font-weight: 500;
+    }
+
+    .dog-profile-card h5 {
+      margin-top: 0.5rem;
+    }
+
+    #cl.copied {
+      color: #28a745;
+      font-weight: 600;
+    }
+  </style>
   <div class="container mt-2 mb-4">
     <div class="row">
       <div class="col-sm">
@@ -47,125 +83,119 @@
       </div>
 
       <div class="col-sm ms-2 ps-0 pe-2">
-        <div class="row ps-0">
-          <h1>
-            <span class="font-weight-bold barbs_red">{{ dog.name }}</span>
-          </h1>
-        </div>
+        <div class="dog-profile-card p-3 p-md-4 border rounded bg-white shadow-sm">
+          <div class="row ps-0">
+            <h1 class="mb-1">
+              <span class="font-weight-bold barbs_red">{{ dog.name }}</span>
+            </h1>
+          </div>
 
-        <div class="">
-          <a href="mailto:barbsdogrescue@gmail.com?subject=Inquiry about {{ dog.name }}" class="cglink">Inquire about {{ dog.name }}</a> |
-          <a href="#" onclick="return false;" class="cglink" id="copylink">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up" viewBox="0 0 16 16" style="margin-bottom:4px;">
-              <path fill-rule="evenodd" d="M3.5 6a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 1 0-1h2A1.5 1.5 0 0 1 14 6.5v8a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-8A1.5 1.5 0 0 1 3.5 5h2a.5.5 0 0 1 0 1z"/>
-              <path fill-rule="evenodd" d="M7.646.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 1.707V10.5a.5.5 0 0 1-1 0V1.707L5.354 3.854a.5.5 0 1 1-.708-.708z"/>
-            </svg>
-            <span id="cl">Share Link</span></a>
-        </div>
+          <div class="mb-3">
+            <a href="mailto:barbsdogrescue@gmail.com?subject=Inquiry about {{ dog.name }}" class="cglink">Inquire about {{ dog.name }}</a> |
+            <a href="#" onclick="return false;" class="cglink" id="copylink">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up" viewBox="0 0 16 16" style="margin-bottom:4px;">
+                <path fill-rule="evenodd" d="M3.5 6a.5.5 0 0 0-.5.5v8a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-8a.5.5 0 0 0-.5-.5h-2a.5.5 0 0 1 0-1h2A1.5 1.5 0 0 1 14 6.5v8a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-8A1.5 1.5 0 0 1 3.5 5h2a.5.5 0 0 1 0 1z"/>
+                <path fill-rule="evenodd" d="M7.646.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 1.707V10.5a.5.5 0 0 1-1 0V1.707L5.354 3.854a.5.5 0 1 1-.708-.708z"/>
+              </svg>
+              <span id="cl">Share Link</span>
+            </a>
+          </div>
 
-        {# Bonded pair indicator #}
-        {% set bonded_ids = dog.get('grouped_pet_ids') %}
-        {% if bonded_ids %}
-          <div class="mt-2 mb-3">
-            <span class="badge bg-warning text-dark">Bonded pair</span>
-            {# grouped_pet_ids may be a list OR a comma-separated string #}
-            {% if bonded_ids is string %}
-              {% set bonded_ids = bonded_ids.split(',') %}
-            {% endif %}
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <span class="badge rounded-pill text-dark bg-light border">{{ dog.sex }}</span>
+            <span class="badge rounded-pill text-dark bg-light border">{{ dog.size }}</span>
+            <span class="badge rounded-pill text-dark bg-light border">{{ dog.weight }} lbs</span>
+            <span class="badge rounded-pill text-dark bg-light border">{{ dog.age }}</span>
+          </div>
 
-            {% for bid in bonded_ids %}
-              {% set bid = bid|string %}
-              {% if bid|trim and (bid|int != dog.id) %}
-                <a class="ms-2 cglink" href="{{ url_for('dog_detail', dog_id=bid|int) }}">View bonded dog</a>{% if not loop.last %}<span class="text-muted">,</span>{% endif %}
+          {# Bonded pair indicator #}
+          {% set bonded_ids = dog.get('grouped_pet_ids') %}
+          {% if bonded_ids %}
+            <div class="mb-3">
+              <span class="badge rounded-pill bg-warning text-dark">Bonded pair</span>
+              {% if bonded_ids is string %}
+                {% set bonded_ids = bonded_ids.split(',') %}
               {% endif %}
-            {% endfor %}
-          </div>
-        {% elif dog.get('siblings_names') %}
-          <div class="mt-1">
-            <span class="badge bg-warning text-dark">Bonded Pair</span>
-            <span class="ms-2">{{ dog.get('siblings_names') }}</span>
-          </div>
-        {% endif %}
+              
+              {% for bid in bonded_ids %}
+                {% set bid = bid|string %}
+                {% if bid|trim and (bid|int != dog.id) %}
+                  <a class="ms-2 cglink" href="{{ url_for('dog_detail', dog_id=bid|int) }}">View bonded dog</a>{% if not loop.last %}<span class="text-muted">,</span>{% endif %}
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
 
-        <div class="p-2 ms-0 border border-dark rounded">
-          <div>
-            <span class="fw-bold pe-2">Sex:</span> {{ dog.sex }}
+          <div class="mb-4">
+            <h5 class="mb-3">About {{ dog.name }}</h5>
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <div class="small text-muted text-uppercase">Location</div>
+                <div>{% if dog.current_location == "Puerto Peñasco" %}Barb's Rocky Point{% else %}Barb's Arizona{% endif %}</div>
+              </div>
+              <div class="col-sm-6">
+                <div class="small text-muted text-uppercase">Breed(s)</div>
+                <div>{{ dog.all_breeds | replace(", ,", "") }}</div>
+              </div>
+              <div class="col-sm-6">
+                <div class="small text-muted text-uppercase">Temperament</div>
+                <div>{{ dog.temperament or 'Not available' }}</div>
+              </div>
+              <div class="col-sm-6">
+                <div class="small text-muted text-uppercase">Shedding</div>
+                <div>{{ dog.shedding or 'Not available' }}</div>
+              </div>
+            </div>
           </div>
-          <div>
-            <span class="fw-bold pe-2">Size:</span> {{ dog.size }}
-          </div>
-          <div>
-            <span class="fw-bold pe-2">Weight:</span> {{ dog.weight }}
-          </div>
-        </div>
 
-        <div class="row">&nbsp;</div>
+          <div class="mb-4">
+            <h5 class="mb-3">Details</h5>
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <div class="small text-muted text-uppercase">Age</div>
+                <div>{{ dog.age }}{% if dog.numerical_age %} ({{ dog.numerical_age }}){% endif %}</div>
+              </div>
+              <div class="col-sm-6">
+                <div class="small text-muted text-uppercase">Date of Birth</div>
+                <div>{{ dog.date_of_birth or 'Not available' }}</div>
+              </div>
+              <div class="col-sm-6">
+                <div class="small text-muted text-uppercase">Date Acquired</div>
+                <div>{{ dog.date_aquired or 'Not available' }}</div>
+              </div>
+              <div class="col-sm-6">
+                <div class="small text-muted text-uppercase">Special Needs</div>
+                <div>{{ dog.has_special_needs or 'Not available' }}</div>
+              </div>
+            </div>
+          </div>
 
-        <div class="p-2 ms-0 border border-dark rounded">
-          <div>
-            <span class="fw-bold pe-2">Age:</span> {{ dog.age }} ({{ dog.numerical_age }})
+          <div class="mb-4">
+            <h5 class="mb-3">Health & Home</h5>
+            <div class="d-flex flex-wrap gap-2">
+              <span class="badge rounded-pill text-dark bg-light border">Shots: {{ dog.shots_up_to_date or 'Unknown' }}</span>
+              <span class="badge rounded-pill text-dark bg-light border">Spayed/Neutered: {{ dog.is_spayed or 'Unknown' }}</span>
+              <span class="badge rounded-pill text-dark bg-light border">Hypoallergenic: {{ dog.is_hypoallergenic or 'Unknown' }}</span>
+              <span class="badge rounded-pill text-dark bg-light border">Housebroken: {{ dog.is_housebroken or 'Unknown' }}</span>
+            </div>
           </div>
-          <div>
-            <span class="fw-bold pe-2">Date of Birth:</span> {{ dog.date_of_birth }}
-          </div>
-          <div>
-            <span class="fw-bold pe-2">Date Acquired:</span> {{ dog.date_aquired }}
-          </div>
-        </div>
 
-        <div class="row">&nbsp;</div>
+          <div class="mb-4">
+            <h5 class="mb-2">Description</h5>
+            <p class="mb-0">{{ dog.description|striptags or 'No description available.' }}</p>
+          </div>
 
-        <div class="p-2 ms-0 border border-dark rounded">
-          <div>
-            <span class="fw-bold pe-2">Breed(s):</span> {{ dog.all_breeds | replace(", ,", "") }}
+          <div class="pt-2 border-top">
+            <a href="mailto:barbsdogrescue@gmail.com?subject=Inquiry about {{ dog.name }}" class="cglink">Inquire about {{ dog.name }}</a>
           </div>
-          <div>
-            <span class="fw-bold pe-2">Shedding:</span> {{ dog.shedding }}
-          </div>
-        </div>
 
-        <div class="row">&nbsp;</div>
-
-        <div class="p-2 ms-0 border border-dark rounded">
-          <div>
-            <span class="fw-bold pe-2">Shots Up to Date:</span> {{ dog.shots_up_to_date }}
-          </div>
-          <div>
-            <span class="fw-bold pe-2">Spayed/Neutered:</span> {{ dog.is_spayed }}
-          </div>
-          <div>
-            <span class="fw-bold pe-2">Hypoallergenic:</span> {{ dog.is_hypoallergenic }}
-          </div>
-          <div>
-            <span class="fw-bold pe-2">Housebroken:</span> {{ dog.is_housebroken }}
-          </div>
-          <div>
-            <span class="fw-bold pe-2">Has Special Needs:</span> {{ dog.has_special_needs }}
-          </div>
-        </div>
-
-        <div class="row">&nbsp;</div>
-
-        <div class="p-2 ms-0 border border-dark rounded">
-          <div>
-            <span class="fw-bold pe-2">Temperament:</span> {{ dog.temperament }}
-          </div>
-          <div>
-            <span class="fw-bold pe-2">Description:</span> {{ dog.description|striptags }}
-          </div>
-        </div>
-
-        <div class="row">&nbsp;</div>
-        <div>
-          <a href="mailto:barbsdogrescue@gmail.com?subject=Inquiry about {{ dog.name }}" class="cglink">Inquire about {{ dog.name }}</a>
-        </div>
-
-        <div class="row align-text-bottom">
-          <div class="col mt-4 ps-2">
-            <button class="btn btn-primary" onclick="goBack()">
-              <i class="fa-solid fa-backward pr-2"></i>
-              Back to Search
-            </button>
+          <div class="row align-text-bottom">
+            <div class="col mt-4 ps-0">
+              <button class="btn btn-primary" onclick="goBack()">
+                <i class="fa-solid fa-backward pr-2"></i>
+                Back to Search
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -176,9 +206,14 @@
     const source = document.querySelector("#copylink");
     source.addEventListener("click", (event) => {
       navigator.clipboard.writeText(location.href);
-      document.getElementById("cl").innerHTML = "Link Copied!";
+
+      const label = document.getElementById("cl");
+      label.innerHTML = "Link Copied!";
+      label.classList.add("copied");
+
       setTimeout(function() {
-        document.getElementById("cl").innerHTML = "Share Link";
+        label.innerHTML = "Share Link";
+        label.classList.remove("copied");
       }, 2000);
     });
 
