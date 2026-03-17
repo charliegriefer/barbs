@@ -72,11 +72,6 @@ class DogService:
                 ]
                 current_app.logger.warning("PAGE %s tail=%s", current_page, tail)
 
-                import json
-
-                with open("page1.json", "w") as f:
-                    json.dump(dogs, f, indent=2)
-
                 # filter out any non-Available dogs (see: issue #32)
                 available_dogs.extend(
                     [d for d in dogs["collection"] if d.get("status") == "Available"]
