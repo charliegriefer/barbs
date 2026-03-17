@@ -2,6 +2,10 @@
   <input type="hidden" name="per_page" id="per_page" value="{{ per_page }}" />
   <fieldset class="border p-2 bg-light mb-3">
     <div class="form-group mb-3">
+      {{ search_form.current_location.label(class="form-label") }}
+      {{ search_form.current_location(class="form-select") }}
+    </div>
+    <div class="form-group mb-3">
       {{ search_form.sex.label(class="form-label") }}
       {{ search_form.sex(class="form-select") }}
     </div>
