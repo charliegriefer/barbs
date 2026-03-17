@@ -26,7 +26,7 @@ cache = Cache(
     app,
     config={
         "CACHE_TYPE": "RedisCache",
-        "CACHE_REDIS_URL": "redis://127.0.0.1:6379/0",
+        "CACHE_REDIS_URL": os.environ["CACHE_REDIS_URL"],
     },
 )
 csrf = CSRFProtect(app)

@@ -11,3 +11,10 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7-alpine
+    container_name: barbs-redis-sidecar
+    restart: unless-stopped
