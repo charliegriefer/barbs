@@ -27,6 +27,14 @@ SHEDDING_CHOICES = [
 
 
 class SearchForm(FlaskForm):
+    current_location = SelectField(
+        "Location",
+        choices=[
+            ("", "All Locations"),
+            ("Puerto Peñasco", "Barb's Rocky Point"),
+            ("Phoenix,AZ", "Barb's Arizona"),
+        ],
+    )
     sex = SelectField(
         "Gender", choices=[("", "Any"), ("Male", "Male"), ("Female", "Female")]
     )
