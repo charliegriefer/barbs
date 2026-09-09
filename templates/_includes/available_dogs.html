@@ -3,7 +3,7 @@
     {% for dog in dogs %}
       <div class="col-6 col-lg-4" id="{{ dog.id }}">
         <div class="dog-search-card text-center" style="cursor:pointer;">
-          <a href="{{ url_for('dog_detail', dog_id=dog.id) }}">
+          <a href="{{ url_for('dog_detail', dog_id=dog.id, embed=1 if embed else None) }}">
             {% if dog.images %}
             <img src="{{ dog.images[0].get('image').get('url') }}" alt="Photo of {{ dog.name }}" />
             {% else %}

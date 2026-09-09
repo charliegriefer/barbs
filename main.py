@@ -86,6 +86,9 @@ def index():
 @app.route("/detail/<int:dog_id>")
 def dog_detail(dog_id: int):
     """Individual dog detail page"""
+
+    embed = request.args.get("embed") == "1"
+
     dog = dog_service.get_dog_by_id(dog_id)
 
     if not dog:
@@ -94,6 +97,7 @@ def dog_detail(dog_id: int):
     return render_template(
         "detail.html",
         title=f"Adopt | Puerto Peñasco | Barb's Dog Rescue | {dog.get('name')}",
+        embed=embed,
         dog=dog,
     )
 
