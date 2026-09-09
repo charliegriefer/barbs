@@ -1,58 +1,52 @@
 {% if dogs|length > 0 %}
-  {% for dog_row in dogs | batch(3, "&nbsp;") %}
-    <div class="row ms-1 w-100 g-4 mb-3">
-      {% for dog in dog_row %}
-        {% if dog != "&nbsp;" %}
-          <div class="col-6 col-sm-6 col-lg-4" id="{{ dog.id }}">
-            <div class="dog-search-card text-center" style="cursor:pointer;">
-              <a href="{{ url_for('dog_detail', dog_id=dog.id) }}">
-                {% if dog.images %}
-                <img src="{{ dog.images[0].get('image').get('url') }}" alt="Photo of {{ dog.name }}" />
-                {% else %}
-                <img src="{{ url_for('static', filename='img/img_404.png') }}" alt="No photo available for {{ dog.name }}" />
+  <div class="row ms-1 w-100 g-4 mb-3">
+    {% for dog in dogs %}
+      <div class="col-6 col-lg-4" id="{{ dog.id }}">
+        <div class="dog-search-card text-center" style="cursor:pointer;">
+          <a href="{{ url_for('dog_detail', dog_id=dog.id) }}">
+            {% if dog.images %}
+            <img src="{{ dog.images[0].get('image').get('url') }}" alt="Photo of {{ dog.name }}" />
+            {% else %}
+            <img src="{{ url_for('static', filename='img/img_404.png') }}" alt="No photo available for {{ dog.name }}" />
+            {% endif %}
+
+            <div class="dog-card-body">
+              <div class="dog-name fw-bold barbs_red">{{ dog.name }}</div>
+
+              <div class="dog-meta-badges mb-0">
+                <span class="badge rounded-pill text-dark bg-light border">{{ dog.sex }}</span>
+                <span class="badge rounded-pill text-dark bg-light border">{{ dog.size }}</span>
+                <span class="badge rounded-pill text-dark bg-light border">{{ dog.age }}</span>
+              </div>
+              <div class="dog-meta-badges mt-2">
+                <span class="badge rounded-pill text-dark bg-light border">
+                  {% if dog.current_location == "Phoenix,AZ" %}
+                  Barb's Arizona
+                  {% else %}
+                  Barb's Rocky Point
+                  {% endif%}
+                </span>
+              </div>
+
+              <div class="dog-breed text-dark">
+                {{ dog.primary_breed }}
+                {% if dog.secondary_breed %}
+                  &amp; {{ dog.secondary_breed }}
                 {% endif %}
+              </div>
 
-                <div class="dog-card-body">
-                  <div class="dog-name fw-bold barbs_red">{{ dog.name }}</div>
-
-                  <div class="dog-meta-badges mb-0">
-                    <span class="badge rounded-pill text-dark bg-light border">{{ dog.sex }}</span>
-                    <span class="badge rounded-pill text-dark bg-light border">{{ dog.size }}</span>
-                    <span class="badge rounded-pill text-dark bg-light border">{{ dog.age }}</span>
-                  </div>
-                  <div class="dog-meta-badges mt-2">
-                    <span class="badge rounded-pill text-dark bg-light border">
-                      {% if dog.current_location == "Phoenix,AZ" %}
-                      Barb's Arizona
-                      {% else %}
-                      Barb's Rocky Point
-                      {% endif%}
-                    </span>
-                  </div>
-
-                  <div class="dog-breed text-dark">
-                    {{ dog.primary_breed }}
-                    {% if dog.secondary_breed %}
-                      &amp; {{ dog.secondary_breed }}
-                    {% endif %}
-                  </div>
-
-                  {% set bonded_ids = dog.get("grouped_pet_ids") %}
-                  {% if bonded_ids %}
-                    <div class="bonded-badge">
-                      <span class="badge rounded-pill bg-warning text-dark">Bonded Pair</span>
-                    </div>
-                  {% endif %}
+              {% set bonded_ids = dog.get("grouped_pet_ids") %}
+              {% if bonded_ids %}
+                <div class="bonded-badge">
+                  <span class="badge rounded-pill bg-warning text-dark">Bonded Pair</span>
                 </div>
-              </a>
+              {% endif %}
             </div>
-          </div>
-        {% else %}
-          <div class="col-6 col-lg-4"></div>
-        {% endif %}
-      {% endfor %}
-    </div>
-  {% endfor %}
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
 {% else %}
   <div class="w-100 text-center">
     <div class="mt-4">
