@@ -12,13 +12,7 @@
 
             <div class="dog-card-body">
               <div class="dog-name fw-bold barbs_red">{{ dog.name }}</div>
-
-              <div class="dog-meta-badges mb-0">
-                <span class="badge rounded-pill text-dark bg-light border">{{ dog.sex }}</span>
-                <span class="badge rounded-pill text-dark bg-light border">{{ dog.size }}</span>
-                <span class="badge rounded-pill text-dark bg-light border">{{ dog.age }}</span>
-              </div>
-              <div class="dog-meta-badges mt-2">
+              <div class="dog-meta-badges mt-1 mb-1">
                 <span class="badge rounded-pill text-dark bg-light border">
                   {% if dog.current_location == "Phoenix,AZ" %}
                   Barb's Arizona
@@ -26,6 +20,11 @@
                   Barb's Rocky Point
                   {% endif%}
                 </span>
+              </div>
+              <div class="dog-meta-badges mt-1">
+                <span class="badge rounded-pill text-dark bg-light border">{{ dog.sex }}</span>
+                <span class="badge rounded-pill text-dark bg-light border">{{ dog.size }}</span>
+                <span class="badge rounded-pill text-dark bg-light border">{{ dog.age }}</span>
               </div>
 
               <div class="dog-breed text-dark">
