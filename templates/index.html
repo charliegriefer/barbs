@@ -2,7 +2,7 @@
 
 {% block content %}
   {% if not embed %}
-    <div class="container mt-2 my-3 px-3 border-bottom">
+    <div class="{{ 'container-fluid' if embed else 'container' }} mt-2 my-3 px-3 border-bottom">
       <h4>Your New Best Friend Might Be Waiting Right Here.</h4>
       <div class="mb-2">Big dogs, little dogs. Puppies, seniors, and everything in between. With dogs available for adoption at both our <span class="fw-bold">Rocky Point, Mexico rescue and our adoption center in Peoria, Arizona</span>, there are so many incredible dogs waiting to meet their people.</div>
       <div class="mb-2"><span class="fw-bold">Don't let location stop you from falling in love!</span> Click on a dog's photo to see where they are currently located. If your perfect match is in Rocky Point, we can often help arrange transportation to our Peoria location.</div>
@@ -20,7 +20,7 @@
     </div>
   {% endif %}
 
-  <div class="container mt-2">
+  <div class="{{ 'container-fluid' if embed else 'container' }} mt-2">
     <div class="row mt-4">
       <div class="col d-none d-sm-block"></div>
       <div class="col-9">
