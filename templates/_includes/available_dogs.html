@@ -15,10 +15,19 @@
                 <div class="dog-card-body">
                   <div class="dog-name fw-bold barbs_red">{{ dog.name }}</div>
 
-                  <div class="dog-meta-badges">
+                  <div class="dog-meta-badges mb-0">
                     <span class="badge rounded-pill text-dark bg-light border">{{ dog.sex }}</span>
                     <span class="badge rounded-pill text-dark bg-light border">{{ dog.size }}</span>
                     <span class="badge rounded-pill text-dark bg-light border">{{ dog.age }}</span>
+                  </div>
+                  <div class="dog-meta-badges mt-2">
+                    <span class="badge rounded-pill text-dark bg-light border">
+                      {% if dog.current_location == "Phoenix,AZ" %}
+                      Barb's Arizona
+                      {% else %}
+                      Barb's Rocky Point
+                      {% endif%}
+                    </span>
                   </div>
 
                   <div class="dog-breed text-dark">
