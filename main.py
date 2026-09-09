@@ -54,6 +54,8 @@ def load_available_dogs():
 @app.route("/")
 def index():
     """Main search page with filtering and pagination"""
+    embed = request.args.get("embed") == "1"
+
     # Get all search data from service
     search_data = dog_service.process_search_request(request.args)
 
@@ -64,6 +66,7 @@ def index():
     return render_template(
         "index.html",
         title="Adopt | Puerto Peñasco | Barb's Dog Rescue",
+        embed=embed,
         search_form=search_form,
         pagination_form=pagination_form,
         dogs=search_data["dogs"],
