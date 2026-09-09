@@ -35,6 +35,16 @@ csrf = CSRFProtect(app)
 dog_service = DogService(cache)
 
 
+def get_cache_buster(filename):
+    filepath = os.path.join(app.static_folder, filename)
+    return str(int(os.path.getmtime(filepath)))
+
+
+@app.context_processor
+def inject_cache_buster():
+    return dict(css_version=get_cache_buster("css/barbs.css"))
+
+
 @app.before_request
 def load_available_dogs():
     """Load dogs from API before each request"""
