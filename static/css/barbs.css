@@ -211,16 +211,6 @@ a.dropdown-item:hover {
   flex: 0 0 auto;
 }
 
-@media (max-width: 575.98px) {
-  .dog-search-card .dog-meta-badges .badge {
-    padding: 0.25rem 0.4rem;
-    font-size: 0.72rem;
-  }
-  .dog-search-card .dog-meta-badges {
-    gap: 0.2rem;
-  }
-}
-
 .dog-search-card .dog-breed {
   font-size: 0.95rem;
   line-height: 1.35;
