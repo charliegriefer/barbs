@@ -1,23 +1,25 @@
 {% extends "base_embed.html" if embed else "base.html" %}
 
 {% block content %}
-  <div class="container mt-2 my-3 px-3 border-bottom">
-    <h4>Your New Best Friend Might Be Waiting Right Here.</h4>
-    <div class="mb-2">Big dogs, little dogs. Puppies, seniors, and everything in between. With dogs available for adoption at both our <span class="fw-bold">Rocky Point, Mexico rescue and our adoption center in Peoria, Arizona</span>, there are so many incredible dogs waiting to meet their people.</div>
-    <div class="mb-2"><span class="fw-bold">Don't let location stop you from falling in love!</span> Click on a dog's photo to see where they are currently located. If your perfect match is in Rocky Point, we can often help arrange transportation to our Peoria location.</div>
-    <div class="mb-2">Every dog at Barb's Dog Rescue has a story. Some were surrendered by families who could no longer care for them. Many were rescued from life on the streets. Others came to us sick, injured, neglected, or abused. Their stories may be different, but today they all want the same thing: <span class="fw-bold">a family to call their own</span>.</div>
-    <div class="mb-2">Our Rocky Point rescue is just about an hour south of the Lukeville, Arizona border and an easy drive from the Phoenix area. Adopting a Mexi-dog and bringing them home to the U.S. is easier than you might think—we'll help provide what you need for the journey home.</div>
-    <div class="mb-2">Prefer to adopt closer to home? Come meet our dogs at <span class="fw-bold">8028 W. Thunderbird Rd., Peoria, AZ</span>.</div>
-    <div class="mb-2">
-      <span class="fw-bold">See a face you can't stop thinking about?</span><br />
-      Email <a href="mailto:barbsdogrescue@gmail.com">barbsdogrescue@gmail.com</a> for more information, photos, or adoption details.<br />
-      Your new best friend could be just one click away.
+  {% if embed %}
+    <div class="container mt-2 my-3 px-3 border-bottom">
+      <h4>Your New Best Friend Might Be Waiting Right Here.</h4>
+      <div class="mb-2">Big dogs, little dogs. Puppies, seniors, and everything in between. With dogs available for adoption at both our <span class="fw-bold">Rocky Point, Mexico rescue and our adoption center in Peoria, Arizona</span>, there are so many incredible dogs waiting to meet their people.</div>
+      <div class="mb-2"><span class="fw-bold">Don't let location stop you from falling in love!</span> Click on a dog's photo to see where they are currently located. If your perfect match is in Rocky Point, we can often help arrange transportation to our Peoria location.</div>
+      <div class="mb-2">Every dog at Barb's Dog Rescue has a story. Some were surrendered by families who could no longer care for them. Many were rescued from life on the streets. Others came to us sick, injured, neglected, or abused. Their stories may be different, but today they all want the same thing: <span class="fw-bold">a family to call their own</span>.</div>
+      <div class="mb-2">Our Rocky Point rescue is just about an hour south of the Lukeville, Arizona border and an easy drive from the Phoenix area. Adopting a Mexi-dog and bringing them home to the U.S. is easier than you might think—we'll help provide what you need for the journey home.</div>
+      <div class="mb-2">Prefer to adopt closer to home? Come meet our dogs at <span class="fw-bold">8028 W. Thunderbird Rd., Peoria, AZ</span>.</div>
+      <div class="mb-2">
+        <span class="fw-bold">See a face you can't stop thinking about?</span><br />
+        Email <a href="mailto:barbsdogrescue@gmail.com">barbsdogrescue@gmail.com</a> for more information, photos, or adoption details.<br />
+        Your new best friend could be just one click away.
+      </div>
+      <div class="mb-2">
+        Our Rocky Point adoption program is donation based—your tax deductible donations allow us to continue to save these precious souls. BDR's Peoria adoption program is fee-based, based on age. Please call or email us for more information.
+      </div>
     </div>
-    <div class="mb-2">
-      Our Rocky Point adoption program is donation based—your tax deductible donations allow us to continue to save these precious souls. BDR's Peoria adoption program is fee-based, based on age. Please call or email us for more information.
-    </div>
-  </div>
-
+  {% endif %}
+  
   <div class="container mt-2">
     <div class="row mt-4">
       <div class="col d-none d-sm-block"></div>
