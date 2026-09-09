@@ -198,7 +198,7 @@ a.dropdown-item:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: nowrap; /* prevent wrapping */
+  flex-wrap: wrap; /* allow wrapping */
   gap: 0.3rem;
   margin: 0.55rem 0 0.65rem;
 }
