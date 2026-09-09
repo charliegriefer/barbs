@@ -1,7 +1,7 @@
 {% extends "base_embed.html" if embed else "base.html" %}
 
 {% block content %}
-  {% if embed %}
+  {% if not embed %}
     <div class="container mt-2 my-3 px-3 border-bottom">
       <h4>Your New Best Friend Might Be Waiting Right Here.</h4>
       <div class="mb-2">Big dogs, little dogs. Puppies, seniors, and everything in between. With dogs available for adoption at both our <span class="fw-bold">Rocky Point, Mexico rescue and our adoption center in Peoria, Arizona</span>, there are so many incredible dogs waiting to meet their people.</div>
@@ -19,7 +19,7 @@
       </div>
     </div>
   {% endif %}
-  
+
   <div class="container mt-2">
     <div class="row mt-4">
       <div class="col d-none d-sm-block"></div>
