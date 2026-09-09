@@ -3,7 +3,7 @@
     <div class="row ms-1 w-100 g-4 mb-3">
       {% for dog in dog_row %}
         {% if dog != "&nbsp;" %}
-          <div class="col-lg-4 col-sm-6" id="{{ dog.id }}">
+          <div class="col-6 col-sm-6 col-lg-4" id="{{ dog.id }}">
             <div class="dog-search-card text-center" style="cursor:pointer;">
               <a href="{{ url_for('dog_detail', dog_id=dog.id) }}">
                 {% if dog.images %}
@@ -48,7 +48,7 @@
             </div>
           </div>
         {% else %}
-          <div class="col-lg-4 col-sm-6"></div>
+          <div class="col-6 col-lg-4"></div>
         {% endif %}
       {% endfor %}
     </div>
