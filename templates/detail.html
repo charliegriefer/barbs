@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_embed.html" if embed else "base.html" %}
 
 {% block content %}
   <style>
