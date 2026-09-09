@@ -6,7 +6,7 @@ from flask_caching import Cache
 from flask_wtf.csrf import CSRFProtect
 
 # Forms are now created by the service layer
-from services import DogService
+from services import DogService, get_page_range
 from utils import build_query_string, calculate_page_link
 
 # Load environment variables
@@ -64,6 +64,9 @@ def index():
         calculate_page_link=calculate_page_link,
         qs=build_query_string(request.args),
         d=cache.get("available_dogs"),
+        page_range=get_page_range(
+            search_data["current_page"], search_data["number_of_pages"]
+        ),
     )
 
 

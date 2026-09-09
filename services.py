@@ -268,3 +268,31 @@ class DogService:
             redis_client.delete(lock_key)
         except Exception:
             pass
+
+
+def get_page_range(current_page, number_of_pages, window=2):
+    """
+    Returns a list of page numbers with None as a placeholder for '...'
+    e.g. current_page=8, number_of_pages=17 -> [1, None, 6, 7, 8, 9, 10, None, 17]
+    """
+    if number_of_pages <= (window * 2) + 5:
+        # Small enough to just show every page
+        return list(range(1, number_of_pages + 1))
+
+    pages = {1, number_of_pages}
+    pages.update(
+        range(
+            max(1, current_page - window),
+            min(number_of_pages, current_page + window) + 1,
+        )
+    )
+    pages = sorted(pages)
+
+    result = []
+    prev = None
+    for p in pages:
+        if prev is not None and p - prev > 1:
+            result.append(None)  # gap marker
+        result.append(p)
+        prev = p
+    return result
