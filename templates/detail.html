@@ -138,6 +138,11 @@
                     <span class="badge rounded-pill bg-info text-dark ms-1">Currently in a Foster Home</span>
                   {% endif %}
                 </div>
+                {% if dog.needs_foster == "Yes" %}
+                  <div class="small text-muted mt-1">
+                    {{ dog.name }} is currently in a foster home. If you'd like to meet them, please contact us.
+                  </div>
+                {% endif %}
               </div>
               <div class="col-sm-6">
                 <div class="small text-muted text-uppercase">Breed(s)</div>
