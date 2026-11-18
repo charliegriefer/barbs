@@ -20,6 +20,9 @@
                   Barb's Rocky Point
                   {% endif%}
                 </span>
+                {% if dog.needs_foster == "Yes" %}
+                <span class="badge rounded-pill bg-info text-dark">In a Foster Home</span>
+                {% endif %}
               </div>
               <div class="dog-meta-badges mt-1">
                 <span class="badge rounded-pill text-dark bg-light border">{{ dog.sex }}</span>

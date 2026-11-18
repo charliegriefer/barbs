@@ -132,7 +132,12 @@
             <div class="row g-3">
               <div class="col-sm-6">
                 <div class="small text-muted text-uppercase">Location</div>
-                <div>{% if dog.current_location == "Puerto Peñasco" %}Barb's Rocky Point{% else %}Barb's Arizona{% endif %}</div>
+                <div>
+                  {% if dog.current_location == "Puerto Peñasco" %}Barb's Rocky Point{% else %}Barb's Arizona{% endif %}
+                  {% if dog.needs_foster == "Yes" %}
+                    <span class="badge rounded-pill bg-info text-dark ms-1">Currently in a Foster Home</span>
+                  {% endif %}
+                </div>
               </div>
               <div class="col-sm-6">
                 <div class="small text-muted text-uppercase">Breed(s)</div>
