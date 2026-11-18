@@ -48,6 +48,8 @@ def inject_cache_buster():
 @app.before_request
 def load_available_dogs():
     """Load dogs from API before each request"""
+    if request.args.get("refresh") == "1":
+        cache.delete("available_dogs")
     dog_service.load_available_dogs()
 
 
