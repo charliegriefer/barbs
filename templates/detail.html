@@ -140,7 +140,7 @@
                 </div>
                 {% if dog.needs_foster == "Yes" %}
                   <div class="small text-muted mt-1">
-                    {{ dog.name }} is currently in a foster home. If you'd like to meet them, please contact us.
+                    {{ dog.name }} is currently in a foster home. If you'd like to meet {% if dog.sex == "Male" %}him{% elif dog.sex == "Female" %}her{% else %}them{% endif %}, please contact us.
                   </div>
                 {% endif %}
               </div>
