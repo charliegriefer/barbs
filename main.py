@@ -58,7 +58,6 @@ def index():
 
     # Get all search data from service
     search_data = dog_service.process_search_request(request.args)
-
     # Get pre-configured forms from service
     search_form, pagination_form = dog_service.prepare_forms(search_data)
 
